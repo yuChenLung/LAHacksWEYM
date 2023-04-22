@@ -16,6 +16,7 @@ function NavBar(props) {
                     <Link to="/"><img src={logo} width="100px" alt="Carpool Logo" /></Link>
                 </div>
                 <div className="nav-bar-right">
+                    {/* add eco friendly stats */}
                     <div className="dropdown">
                         <button className="dropbtn" onClick={() => setShow(!show)}><FontAwesomeIcon icon={faUser} size="lg" /></button>
                         <div id="profileDropdown" className={`dropdown-content ${show ? "show" : ""}`}>
