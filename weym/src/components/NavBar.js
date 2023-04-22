@@ -1,6 +1,6 @@
 import React from 'react';
 import logo from '../logo.svg';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import './components.css';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faUser } from '@fortawesome/free-solid-svg-icons';
@@ -13,7 +13,7 @@ function NavBar(props) {
             // JSX code to render component goes here
             <div className="nav-bar">
                 <div className="nav-bar-left">
-                    <Link to="/"><img src={logo} width="100px" alt="Carpool Logo" /></Link>
+                    <Link to="/"><img src={logo} width="100px" /></Link>
                 </div>
                 <div className="nav-bar-right">
                     {/* add eco friendly stats */}
@@ -25,6 +25,23 @@ function NavBar(props) {
                             {/* add onclick for login function */}
                         </div>
                     </div>
+                </div>
+            </div >
+        );
+    }
+    else {
+        return (
+            // JSX code to render component goes here
+            <div className="nav-bar">
+                <div className="nav-bar-left">
+                    <Link to="/"><img src={logo} width="100px" alt="Carpool Logo" /></Link>
+                </div>
+                <div className="nav-bar-right">
+                    {/* on click func */}
+                    <Link to="/onboarding">
+                        <button className="dropbtn" style={{ fontSize: '18px' }}>Sign in <FontAwesomeIcon icon={faUser} size="lg" /></button>
+                    </Link>
+                    {/* connect to onboarding page */}
                 </div>
             </div >
         );
