@@ -5,7 +5,7 @@ const mongoose = require('mongoose');
 
 //this is the planned schedule
 const ScheduleSchema = new mongoose.Schema({
-    users: [{ type : ObjectId, ref: 'User' }],
+    users: [{ type : mongoose.Schema.Types.ObjectId, ref: 'User' }],
     leaveTime: Number, //written in 24 hour format, so 6:00pm would be written as 1800
     startLocation: String,
     destination: String,

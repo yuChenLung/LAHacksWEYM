@@ -19,7 +19,7 @@ const UserSchema = new mongoose.Schema({
     email: {
         type: String,
         required : true,
-        maxlength: 20,
+        maxlength: 50,
         unique : true
     },
     password: {
@@ -36,7 +36,10 @@ const UserSchema = new mongoose.Schema({
     lateTime: Number,
     numRides: Number,
     address: String,
-    schedules: [{ type : ObjectId, ref: 'Schedule' }],
+    latitude: Number,
+    longitude: Number,
+    schedules: [{ type : mongoose.Schema.Types.ObjectId, ref: 'Schedule' }],
+    plannedSchedules: [{ type : mongoose.Schema.Types.ObjectId, ref: 'plannedSchedule' }],
 });
 
 UserSchema.methods.validatePassword = function(password) {
@@ -45,7 +48,7 @@ UserSchema.methods.validatePassword = function(password) {
 
 function validateUserLogin(user) {
     const schema = Joi.object({
-        username: Joi.string().max(20),
+        email: Joi.string().max(50),
         password: Joi.string().min(3).max(255).required()
     });
     return schema.validate(user);
@@ -55,8 +58,9 @@ function validateUserRegister(user) {
     const schema = Joi.object({
         firstName: Joi.string().min(1).max(50).required(),
         lastName: Joi.string().min(1).max(50).required(),
-        username: Joi.string().max(255).required(),
+        email: Joi.string().max(50).required(),
         password: Joi.string().min(3).max(255).required(),
+        adddress: Joi.string().min(3).max(255).required()
     });
     return schema.validate(user);
 }
