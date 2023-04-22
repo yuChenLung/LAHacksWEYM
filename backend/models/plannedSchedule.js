@@ -5,24 +5,37 @@ const mongoose = require('mongoose');
 
 //this is the planned schedule
 const PlannedScheduleSchema = new mongoose.Schema({
-    user: { type : ObjectId, ref: 'User' },
-    leaveTime: Number, //written in 24 hour format, so 6:00pm would be written as 1800
+    user: { type : mongoose.Schema.Types.ObjectId, ref: 'User' },
+    startTime: Number, //written in minutes, so 18:00 = 18*60 = 1080
+    endTime: Number,
+    day: Number,
     startLocation: String,
     destination: String,
+    sLatitude: Number,
+    sLongitude: Number,
+    dLatitude: Number,
+    dLongitude: Number,
 });
 
-function validatePlannedSchedule(schedule) {
+function validatePlannedScheduleReq(schedule) {
     const schema = Joi.object({
-        leaveTime: Joi.number().min(0).max(2359).required(),
-        startLocation: Joi.string().max(255),
-        destination: Joi.string().max(255),
+        user: Joi.string().max(255).required(),
+        startTime: Joi.number().min(0).max(1440).required(),
+        endTime: Joi.number().min(0).max(1440).required(),
+        day: Joi.number().min(0).max(1234567).required(),
+        startLocation: Joi.string().max(255).required(),
+        destination: Joi.string().max(255).required(),
+        sLatitude: Joi.number().min(-90).max(90),
+        sLongitude: Joi.number().min(-180).max(180),
+        dLatitude: Joi.number().min(-90).max(90),
+        dLongitude: Joi.number().min(-180).max(180),
     });
     return schema.validate(schedule);
 }
 
-const Schedule = mongoose.model('PlannedSchedule', PlannedScheduleSchema);
+const PlannedSchedule = mongoose.model('PlannedSchedule', PlannedScheduleSchema);
 
 module.exports = {
     PlannedSchedule: PlannedSchedule,
-    validatePlannedSchedule: validatePlannedSchedule,
+    validatePlannedScheduleReq: validatePlannedScheduleReq,
 }

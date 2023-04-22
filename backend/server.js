@@ -37,3 +37,6 @@ mongoose.connect(url, {
 }).catch(err => {
     console.log(err);
 });
+
+const userRouter = require('./routes/users');
+app.use("/",userRouter);
