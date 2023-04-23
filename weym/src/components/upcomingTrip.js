@@ -33,6 +33,7 @@ function UpcomingTrip() {
         const endMinNum = Math.floor(context.scheduler.startTime/60)
         const endMinString = endMinNum === 0 ? String(startMinNum) + "0" : String(startMinNum)
         const endTimeLabel = endHour >= 12 ? endHour + ':' + endMinString + " PM" : endHour + ':' + context.scheduler.endTime % 60 + " AM";
+        console.log("plamnned", context.matches.plannedEvents)
         return (
             <div className="tripBox">
                 <h1>{getWeekdayLabel(1)}</h1>

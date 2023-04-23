@@ -22,7 +22,7 @@ function NavBar() {
         e.preventDefault();
         context.signIn.setSignedIn();
         context.user.setUID('');
-        context.signIn.setProfileDropdown();
+        context.navBar.setProfileDropdown();
         localStorage.clear();
         navigate('/onboarding');
     }
