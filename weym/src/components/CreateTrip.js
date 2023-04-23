@@ -1,10 +1,14 @@
 import './components.css';
+import { useDatabase } from '../context/state';
+import getLatLng from '../geocoding/getlatlng';
 
 function CreateTripForm(props) {
+    const context = useDatabase();
+
     async function handleSubmit(e) {
         e.preventDefault();
         const formData = new FormData();
-        formData.append('user', 'temp');
+        formData.append('user', context.user.uid);
         formData.append('startTime', props.startTime);
         formData.append('endTime', props.endTime);
         formData.append('day', props.day);
@@ -13,6 +17,15 @@ function CreateTripForm(props) {
         for (const pair of tempData.entries()) {
             formData.append(pair[0], pair[1]);
         }
+
+        var {lat, lng} = await getLatLng(formData.get('startLocation'));
+        console.log(lat, lng);
+        formData.append('sLat', lat);
+        formData.append('sLong', lng);
+        var {lat, lng} = await getLatLng(formData.get('destination'));
+        console.log(lat, lng);
+        formData.append('dLat', lat);
+        formData.append('dLong', lng);
 
         const formJson = Object.fromEntries(formData.entries());
         console.log(formJson);
@@ -50,14 +63,16 @@ function CreateTripForm(props) {
                     <label>Start Time:</label>
                     <input
                         className="horiz-field"
-                        type="time"
+                        type="number"
                         name="startTime"
+                        defaultValue={props.startTime}
                     />
                     <label>End Time:</label>
                     <input
                         className="horiz-field"
-                        type="time"
+                        type="number"
                         name="endTime"
+                        defaultValue={props.endTime}
                     />
                     <label>Day of the Week:</label>
                     {/* add default value */}

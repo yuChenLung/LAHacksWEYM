@@ -67,7 +67,6 @@ function Onboarding() {
         // Send post request to database
         try {
             const response = await fetchData(formattedJson);
-            console.log(response);
             // Handle the response data here
         } catch (error) {
             console.error('Error fetching data:', error);

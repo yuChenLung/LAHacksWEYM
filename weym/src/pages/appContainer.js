@@ -1,14 +1,14 @@
 import React from 'react'
 import Scheduler from '../components/scheduler'
 import UpcomingTrip from '../components/upcomingTrip'
-import CreateTrip from '../components/createTrip'
+import CreateTripForm from '../components/CreateTrip'
 
 function AppContainer() {
     return (
         <div>
             <div style={{ display: 'flex' }}>
                 <div style={{ width: window.innerWidth * .28 }}>
-                    <CreateTrip></CreateTrip>
+                    <CreateTripForm></CreateTripForm>
                     {/* <UpcomingTrip></UpcomingTrip> */}
                 </div>
                 <Scheduler />

@@ -11,10 +11,10 @@ const PlannedScheduleSchema = new mongoose.Schema({
     day: Number,
     startLocation: String,
     destination: String,
-    sLatitude: Number,
-    sLongitude: Number,
-    dLatitude: Number,
-    dLongitude: Number,
+    sLat: Number,
+    sLong: Number,
+    dLat: Number,
+    dLong: Number,
 });
 
 function validatePlannedScheduleReq(schedule) {
@@ -25,10 +25,10 @@ function validatePlannedScheduleReq(schedule) {
         day: Joi.number().min(0).max(1234567).required(),
         startLocation: Joi.string().max(255).required(),
         destination: Joi.string().max(255).required(),
-        sLatitude: Joi.number().min(-90).max(90),
-        sLongitude: Joi.number().min(-180).max(180),
-        dLatitude: Joi.number().min(-90).max(90),
-        dLongitude: Joi.number().min(-180).max(180),
+        sLat: Joi.number().min(-90).max(90).required(),
+        sLong: Joi.number().min(-180).max(180).required(),
+        dLat: Joi.number().min(-90).max(90).required(),
+        dLong: Joi.number().min(-180).max(180).required(),
     });
     return schema.validate(schedule);
 }
