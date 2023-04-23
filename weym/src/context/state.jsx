@@ -33,6 +33,7 @@ const DataWrapper = ({ children }) => {
 
   const [plannedEvents, setPlannedEvents] = useState([])
   const [createTrip, setCreateTrip] = useState(false)
+  const [tripData, setTripData] = useState([])
 
   useEffect(() => {
     // Whenever a value is updated (i.e. the scheduler data, or the geolocation, it will call this use effect)
@@ -140,6 +141,10 @@ const DataWrapper = ({ children }) => {
     setCreateTrip(trip)
   }
 
+  const updateTripData = (trips) => {
+    setTripData(trips)
+  }
+
   return (
     <div>
       <dataState.Provider
@@ -197,6 +202,8 @@ const DataWrapper = ({ children }) => {
           setTripClicked: updateTripClicked,
           createTrip: createTrip,
           setCreateTrip: updateCreateTrip,
+          tripData: tripData,
+          setTripData: updateTripData,
         }}
       >
         {children}

@@ -1,7 +1,6 @@
 import AppContainer from './pages/appContainer.js';
 import DataWrapper from './context/state';
 import NavBar from './components/NavBar.js';
-import Profile from './components/Profile.js';
 import Onboarding from './pages/onboarding.js';
 import SignIn from './components/signIn.js';
 import LandingPage from './pages/landing.js';
@@ -22,7 +21,6 @@ function App() {
           <Routes>
             <Route path='/' element={<LandingPage />} />
             <Route path='/onboarding' element={<Onboarding />} />
-            <Route path='/profile' element={<Profile />} />
             <Route path='/app' element={<AppContainer />} />
             <Route path='/create-trip' element={<CreateTripForm startTime={30} endTime={60} day={1} />} />
           </Routes>

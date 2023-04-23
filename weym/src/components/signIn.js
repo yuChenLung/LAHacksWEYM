@@ -20,7 +20,10 @@ function SignIn() {
 
         try {
             const response = await fetchData(formJson);
+            const date = (new Date()).getDay();
+            const tripData = await fetchTripData(response.userId, date + 1);
             console.log("UID: ", response);
+            context.setTripData(tripData);
 
             // Handle the response data here
             if (response && validCredentials) {
@@ -35,6 +38,7 @@ function SignIn() {
             console.error('Error fetching data:', error);
             // Handle the error here
         }
+
     }
 
     async function fetchData(data) {
@@ -54,6 +58,22 @@ function SignIn() {
                 setValidCredentials(false)
                 return null
             }
+            let json = await response.json();
+            return json;
+        } catch (error) {
+            console.error('Error fetching data:', error);
+            return null;
+        }
+    }
+
+    async function fetchTripData(uid, day) {
+        try {
+            const response = await fetch('http://localhost:8001/user/' + uid + '/' + day, {
+                method: 'GET',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+            });
             let json = await response.json();
             return json;
         } catch (error) {

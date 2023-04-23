@@ -64,6 +64,22 @@ function NavBar() {
         }
     }
 
+    async function fetchTripData(uid, day) {
+        try {
+            const response = await fetch('http://localhost:8001/user/' + uid + '/' + day, {
+                method: 'GET',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+            });
+            let json = await response.json();
+            return json;
+        } catch (error) {
+            console.error('Error fetching data:', error);
+            return null;
+        }
+    }
+
     async function handleDropPropClick(e) {
         e.preventDefault();
         var userData = null;
@@ -92,12 +108,20 @@ function NavBar() {
         // console.log(context.proposal.sendersProposalInfo);
     }
 
+    async function handleAppClick(e) {
+        e.preventDefault();
+        const date = (new Date()).getDay();
+
+        const tripData = await fetchTripData(localStorage.getItem("userId"), date + 1);
+        context.setTripData(tripData);
+    }
+
     if (localStorage.getItem("signedIn") !== null && localStorage.getItem("signedIn")) {
         return (
             // JSX code to render component goes here
             <div className="nav-bar">
                 <div className="nav-bar-left">
-                    <Link to="/app"><FontAwesomeIcon className="fa-light" style={{ color: 'white' }} icon={faCat} /></Link>
+                    <Link onClick={handleAppClick} to="/app"><FontAwesomeIcon className="fa-light" style={{ color: 'white' }} icon={faCat} /></Link>
                 </div>
                 <div className="nav-bar-right">
                     {/* add eco friendly stats */}

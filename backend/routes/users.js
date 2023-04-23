@@ -44,8 +44,9 @@ router.get("/matches/:schedId", async (req, res) => {
     }
     matches.sort((a,b)=>b[1]-a[1]);
     if (matches.length < 5)
-        res.json(matches);
-    res.json({"matches":matches.slice(0,5)});
+        res.json({"matches":matches});
+    else
+        res.json({"matches":matches.slice(0,5)});
     return res.status(200).send("Please try again.");
 });
 
@@ -69,7 +70,7 @@ router.get("/user/:userId/:day", async (req, res) => {
         results.push(pSched);
     }
     res.json(results);
-    return res.status(200).send(user);
+    return res.status(200).send();
 });
 
 
