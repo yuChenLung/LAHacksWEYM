@@ -2,6 +2,8 @@ import './components.css';
 import { useDatabase } from '../context/state';
 import getLatLng from '../Geocoding/getlatlng';
 
+const days = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"]
+
 function CreateTripForm(props) {
     const context = useDatabase();
 
@@ -9,9 +11,9 @@ function CreateTripForm(props) {
         e.preventDefault();
         const formData = new FormData();
         formData.append('user', context.user.uid);
-        formData.append('startTime', props.startTime);
-        formData.append('endTime', props.endTime);
-        formData.append('day', props.day);
+        formData.append('startTime', context.scheduler.startTime);
+        formData.append('endTime', context.scheduler.endTime);
+        formData.append('day', context.scheduler.day);
         const temp = e.target;
         const tempData = new FormData(temp);
         for (const pair of tempData.entries()) {
@@ -49,6 +51,7 @@ function CreateTripForm(props) {
                     'Content-Type': 'application/json'
                 },
             });
+            context.doRefresh()
         } catch (error) {
             console.error('Error fetching data:', error);
             return null;
@@ -65,18 +68,18 @@ function CreateTripForm(props) {
                         className="horiz-field"
                         type="number"
                         name="startTime"
-                        defaultValue={props.startTime}
+                        defaultValue={context.scheduler.startTime}
                     />
                     <label>End Time:</label>
                     <input
                         className="horiz-field"
                         type="number"
                         name="endTime"
-                        defaultValue={props.endTime}
+                        defaultValue={context.scheduler.endTime}
                     />
                     <label>Day of the Week:</label>
-                    {/* add default value */}
                     <select name="day" style={{ marginBottom: '5px' }}>
+                        <option value={String(context.scheduler.day)}>{days[context.scheduler.day - 1]}</option>
                         <option value="1">Sunday</option>
                         <option value="2">Monday</option>
                         <option value="3">Tuesday</option>
