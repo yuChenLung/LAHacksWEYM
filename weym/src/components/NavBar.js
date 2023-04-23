@@ -8,30 +8,7 @@ import { faUser, faCarSide } from '@fortawesome/free-solid-svg-icons';
 import { useDatabase } from "../context/state";
 
 function NavBar() {
-    // async function fetchUserData() {
-    //     let uid = '6443cd3b66d2a4511b0d3837'
-    //     try {
-    //         const response = await fetch('http://localhost:8001/' + uid, {
-    //             method: 'GET',
-    //             headers: {
-    //                 'Content-Type': 'application/json'
-    //             },
-    //         });
-    //         let json = await response.json()
-    //         return json
-    //     } catch (error) {
-    //         console.error('Error fetching data:', error);
-    //         return null;
-    //     }
-    // }
-
-    /* fetch proposals from user data and then uncomment proposals and make the card */
-
-    // fetchUserData().then((data) => {
-    //     console.log(data);
-    // });
-
-    const [show, setShow] = React.useState(false);
+    // const [show, setShow] = React.useState(false);
     const context = useDatabase();
     const navigate = useNavigate();
 
@@ -47,6 +24,61 @@ function NavBar() {
         navigate('/onboarding');
     }
 
+    async function fetchProposedSchedule(proposalId) {
+        try {
+            const response = await fetch('http://localhost:8001/pschedule/' + proposalId, {
+                method: 'GET',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+            });
+            let json = await response.json()
+            return json
+        } catch (error) {
+            console.error('Error fetching data:', error);
+            return null;
+        }
+    }
+
+    async function fetchUserData() {
+        try {
+            const response = await fetch('http://localhost:8001/' + '644484d880bc9840d9f2b800', { //context.user.uid, { 
+                method: 'GET',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+            });
+            let json = await response.json();
+            return json;
+        } catch (error) {
+            console.error('Error fetching data:', error);
+            return null;
+        }
+    }
+
+    async function handleDropPropClick(e) {
+        var userData = null;
+
+        context.navBar.setProposalDropdown();
+        if (!context.navBar.showProposalDropdown) {
+            userData = await fetchUserData();
+        console.log(userData);
+        }
+
+        if (userData && userData.proposedSchedules.length !== 0) {
+            var schedules = [];
+            var currProp = null;
+            for (var i = 0; i < userData.proposedSchedules.length; i++) {
+                console.log(i)
+                currProp = await fetchProposedSchedule(userData.proposedSchedules[i]);
+                console.log(currProp);
+                schedules.push(currProp);
+            }
+            // Make a useState to save schedules
+        }
+    }
+
+
     if (context.signIn.signedIn) {
         return (
             // JSX code to render component goes here
@@ -57,16 +89,16 @@ function NavBar() {
                 <div className="nav-bar-right">
                     {/* add eco friendly stats */}
                     <div className="dropdown">
-                        <button className="dropProposalbtn" onClick={() => context.navBar.setProfileDropdown()}><FontAwesomeIcon icon={faCarSide} size="lg" /></button>
-                        <div id="profileDropdown" style={{ borderRadius: '15px' }} className={`dropdown-content ${context.navBar.showProfileDropdown ? "showDropdown" : ""}`}>
+                        <button className="dropProposalbtn" onClick={ handleDropPropClick }><FontAwesomeIcon icon={faCarSide} size="lg" /></button>
+                        <div id="proposalDropdown" style={{ borderRadius: '15px' }} className={`dropdown-content ${context.navBar.showProposalDropdown ? "showDropdown" : ""}`}>
                             {/* {proposals} */}
                             <p style={{ textAlign: "center" }}>No pending requests!</p>
                         </div>
                     </div>
 
                     <div className="dropdown">
-                        <button className="dropbtn" onClick={() => context.navBar.setProposalDropdown()}><FontAwesomeIcon icon={faUser} size="lg" /></button>
-                        <div id="profileDropdown" className={`dropdown-content ${context.navBar.showProposalDropdown ? "showDropdown" : ""}`}>
+                        <button className="dropbtn" onClick={() => context.navBar.setProfileDropdown()}><FontAwesomeIcon icon={faUser} size="lg" /></button>
+                        <div id="profileDropdown" className={`dropdown-content ${context.navBar.showProfileDropdown ? "showDropdown" : ""}`}>
                             <Link to="/profile">View Profile</Link>
                             <Link to="/onboarding">
                                 <button onClick={handleLogOutClick}>Log out</button>
