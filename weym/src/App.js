@@ -14,7 +14,7 @@ function App() {
     <div>
       <DataWrapper>
         <BrowserRouter>
-          <NavBar signedIn={false} />
+          <NavBar signedIn={true} />
           <SignIn />
           <Routes>
             <Route path='/' element={<Scheduler />} />

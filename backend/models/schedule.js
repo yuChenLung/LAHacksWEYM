@@ -14,8 +14,8 @@ const ScheduleSchema = new mongoose.Schema({
 
 function validateSchedule(schedule) {
     const schema = Joi.object({
-        scheduleId: Joi.string().max(255).required(),
-        userId: Joi.string().max(255).required() //the user that accepted this schedule
+        proposalId: Joi.string().max(255).required(),
+        receiverId: Joi.string().max(255).required() //the user that accepted this schedule
     });
     return schema.validate(schedule);
 }
