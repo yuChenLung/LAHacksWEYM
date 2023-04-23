@@ -23,7 +23,7 @@
 .dropbtn {
     background-color: rgba(69, 146, 88, 0.767);
     color: white;
-    padding: 15px;
+    padding: 10px;
     border-radius: 150px;
     border: none;
     cursor: pointer;
@@ -65,3 +65,104 @@
   
   /* Show the dropdown menu (use JS to add this class to the .dropdown-content container when the user clicks on the dropdown button) */
   .show {display:block;}
+
+  .form {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items:center;
+    width: 100%;
+  }
+
+  .formHeader {
+    font-size: 30px;
+  }
+
+  .formFields {
+    font-size: 20px;
+    display: flex;
+    flex-direction: column;
+    width: 40%;
+  }
+
+  .formField {
+    display: flex;
+    justify-content: space-evenly;
+    padding: 10px 0;
+  }
+
+  .horiz-field {
+    padding: 12px 20px;
+    margin: 8px 0;
+    box-sizing: border-box;
+  }
+
+  input[type=text]:focus {
+    border: 3px solid #555;
+  }
+
+  select {
+    margin-top: 10px;
+    padding: 12px 20px;
+    box-sizing: border-box;
+    border-radius: 4px;
+  }
+
+  .horiz-field {
+    padding: 12px 0;
+    box-sizing: border-box;
+  }
+
+  .horiz-field-apt, .horiz-field-zipcode {
+    width: 80px;
+  }
+
+  .horiz-field-address {
+    width: 60%;
+  }
+
+  .horiz-field-city {
+    width: 53%;
+  }
+
+  .horiz-field-state {
+    width: 55px;
+  }
+
+  ::placeholder {
+    padding-left: 5px;
+  }
+
+  .firstLabel {
+    padding-right: 10px;
+  }
+
+  .successiveLabel {
+    padding: 0 10px;
+  }
+
+  .submitButton {
+    /* background-color: rgba(111, 209, 123, 0.575); Green */
+    border: 3px solid rgba(111, 209, 123, 0.575);
+    margin-top: 20px;
+    padding: 15px 32px;
+    border-radius: 10px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 18px;
+    transition-duration: 0.4s;
+  }
+
+  .submitButton:hover {
+    background-color: rgba(111, 209, 123, 0.575); /* Green */
+  }
+
+  .passwordValidate {
+    display: none;
+  }
+
+  .showPasswordError {
+    color: red;
+    font-size: 15px;
+  }
