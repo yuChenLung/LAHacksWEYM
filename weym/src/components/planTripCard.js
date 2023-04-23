@@ -8,14 +8,16 @@ function PlanTripCard(props) {
 
     async function handleCardClick() {
         const matchData = await fetchMatchData(props.oid);
-        console.log("matches arr:", matchData.matches);
+        console.log("matches arr:", matchData.matches[0]);
         var dataArr = [];
         var temp = null;
-        // for (var i = 0; i < matchData.length; i++) {
-        //     temp = await fetchCardData(matchData[i]);
-        //     console.log(temp)
-        //     // dataArr.push()
-        // }
+        console.log(matchData.matches.length)
+        console.log(matchData.matches[0][0])
+        for (var i = 0; i < matchData.matches.length; i++) {
+            temp = await fetchCardData(matchData.matches[i][0]._id);
+            console.log(temp)
+            // dataArr.push()
+        }
     }
 
     async function fetchCardData(oid) {

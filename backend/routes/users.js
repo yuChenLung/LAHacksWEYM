@@ -47,7 +47,7 @@ router.get("/matches/:schedId", async (req, res) => {
         res.json({"matches":matches});
     else
         res.json({"matches":matches.slice(0,5)});
-    return res.status(200).send("Please try again.");
+    return res.status(200);
 });
 
 // to get user profile
