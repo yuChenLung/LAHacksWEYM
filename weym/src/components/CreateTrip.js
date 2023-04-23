@@ -1,3 +1,5 @@
+import './components.css';
+
 function CreateTripForm(props) {
     const handleSubmit = (e) => {
         e.preventDefault();
