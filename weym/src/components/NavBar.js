@@ -113,7 +113,6 @@ function NavBar() {
                     <div className="dropdown">
                         <button className="dropbtn" onClick={() => context.navBar.setProfileDropdown()}><FontAwesomeIcon icon={faUser} size="lg" /></button>
                         <div id="profileDropdown" className={`dropdown-content ${context.navBar.showProfileDropdown ? "showDropdown" : ""}`}>
-                            <Link to="/create-trip" onClick={handleProfileClick}>Create a Trip</Link>
                             <Link to="/profile" onClick={handleProfileClick}>View Profile</Link>
                             <Link to="/onboarding" onClick={handleLogOutClick}>Log out</Link>
                         </div>
