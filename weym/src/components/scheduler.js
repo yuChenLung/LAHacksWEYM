@@ -174,7 +174,7 @@ const Scheduler = (props) => {
   const [isClickingGrid, setClickingGrid] = React.useState(false)
   const [trips, setTrips] = React.useState([]);
   const [numTrips, setNumTrips] = React.useState(0)
-  const database = useDatabase()
+  const context = useDatabase()
 
   const reference = React.useRef()
 
@@ -289,24 +289,7 @@ const Scheduler = (props) => {
   }
 
   async function createScheduleRequest(event) {
-    async function postData(jsonData) {
-      try {
-        const response = await fetch('http://localhost:8001/pschedule', {
-          method: 'POST',
-          body: JSON.stringify(jsonData),
-          headers: {
-            'Content-Type': 'application/json'
-          },
-        });
-        console.log(response)
-      } catch (error) {
-        console.error('Error fetching data:', error);
-        return null;
-      }
-    }
     setClickingGrid(false)
-    // console.log(event.target.parentNode.parentNode.scrollTop)
-
     let gridXStart = reference.current.offsetLeft + window.innerWidth * .04
     let gridYStart = reference.current.offsetTop
 
@@ -336,31 +319,9 @@ const Scheduler = (props) => {
     newScheduledTrips.push({ i: global_counter, x: newX, y: newY, h: 20, w: 1 })
     global_counter += 1
 
-    let uid = '64450e42dae8d7fcbb04043f'
-    const formattedJson = {
-      user: uid,
-      startTime: newY * 5,
-      endTime: 60 + newY * 5,
-      day: newX + 1,
-      startLocation: "home",
-      destination: "school"
-    }
-    console.log(formattedJson);
-    //format json object
-
-    // Send post request to database
-    try {
-      const response = await postData(formattedJson);
-      console.log(response);
-      // Handle the response data here
-    } catch (error) {
-      console.error('Error fetching data:', error);
-      // Handle the error here
-    }
+    context.scheduler.setSchedule(newY * 5, 60 + newY * 5, newX + 1)
     setScheduledTrips(newScheduledTrips)
     setNumTrips(numTrips + 1)
-
-    database.doRefresh()
   }
 
   React.useEffect(() => {
@@ -407,7 +368,7 @@ const Scheduler = (props) => {
       }
     };
     fetchData()
-  }, [database.refresh]);
+  }, [context.refresh]);
 
   console.log(numTrips)
   let view = []
