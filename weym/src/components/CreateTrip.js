@@ -18,10 +18,14 @@ function CreateTripForm(props) {
             formData.append(pair[0], pair[1]);
         }
 
-        const {lat, lng} = await getLatLng(formData.get('startLocation'));
+        var {lat, lng} = await getLatLng(formData.get('startLocation'));
         console.log(lat, lng);
-        // formData.append('sLat', lat);
-        // formData.append('sLong', lng);
+        formData.append('sLat', lat);
+        formData.append('sLong', lng);
+        var {lat, lng} = await getLatLng(formData.get('destination'));
+        console.log(lat, lng);
+        formData.append('dLat', lat);
+        formData.append('dLong', lng);
 
         const formJson = Object.fromEntries(formData.entries());
         console.log(formJson);
