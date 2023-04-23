@@ -13,6 +13,7 @@ const ScheduleSchema = new mongoose.Schema({
 
 function validateSchedule(schedule) {
     const schema = Joi.object({
+        proposalId: Joi.string(), //objId of the proposed schedule
         leaveTime: Joi.number().min(0).max(2359).required(),
         startLocation: Joi.string().max(255),
         destination: Joi.string().max(255),

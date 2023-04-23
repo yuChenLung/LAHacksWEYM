@@ -33,9 +33,22 @@ function validatePlannedScheduleReq(schedule) {
     return schema.validate(schedule);
 }
 
+function validatePlannedScheduleUpdate(potentialUpdates) {
+    const schema = Joi.object({
+        user: Joi.string().max(80).required(),
+        startTime: Joi.number().min(0).max(1440).required(),
+        endTime: Joi.number().min(0).max(1440).required(),
+        day: Joi.number().min(1).max(7).required(),
+        startLocation: Joi.string().max(255).required(),
+        destination: Joi.string().max(255).required()
+    });
+    return schema.validate(potentialUpdates);
+}
+
 const PlannedSchedule = mongoose.model('PlannedSchedule', PlannedScheduleSchema);
 
 module.exports = {
     PlannedSchedule: PlannedSchedule,
     validatePlannedScheduleReq: validatePlannedScheduleReq,
+    validatePlannedScheduleUpdate: validatePlannedScheduleUpdate,
 }
