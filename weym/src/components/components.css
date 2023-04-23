@@ -184,8 +184,9 @@
 
   /* Upcoming Trip CSS */
 
-  .tripCard {
+  .tripBox {
     border-radius: 20px;
+    background-color: rgba(111, 209, 122, 0.226);
     border: 3px solid rgba(111, 209, 123, 0.575);
     padding: 20px;
     margin: 20px 35px;
@@ -260,4 +261,40 @@
   height: 250px;
   margin-top: 170px;
   position: relative;
+}
+
+.gif {
+  display: block;
+  width: 100%;
+  margin: 0 auto;
+}
+
+/* Trip Card CSS */
+.tripCard {
+  border-radius: 25px;
+  background-color: rgba(255, 255, 255, 0.781);
+  padding: 0 10px 15px 10px;
+  margin-bottom: 10px;
+}
+
+.tripCardTitle {
+  display: flex;
+}
+
+.tripCardTime {
+  background-color: rgba(75, 163, 75, 0.712);
+  padding: 10px;
+  font-size: 12px;
+  border-radius: 25px;
+}
+
+.tripCardName {
+  margin-left: 10px;
+  align-self: center;
+}
+
+.tripCardLocation {
+  display: flex;
+  padding-left: 10px;
+  font-size: 12px;
 }
