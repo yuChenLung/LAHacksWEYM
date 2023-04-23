@@ -54,6 +54,8 @@ function UpcomingTrip() {
     else {
         var numberTrips = 3;
 
+        const date = new Date();
+
         const tripCards = Array.from({ length: numberTrips }, (_, index) => {
             return <TripCard key={index} />;
         });
@@ -62,7 +64,7 @@ function UpcomingTrip() {
             return (
                 <div className="tripBox">
                     {/* change this to get from backend */}
-                    <h1>{getWeekdayLabel(1)}</h1>
+                    <h1>{getWeekdayLabel(date.getDay() + 1)}</h1>
                     <div>{tripCards}</div>
                 </div>
             )
@@ -71,7 +73,7 @@ function UpcomingTrip() {
             return (
                 <div className="tripBox">
                     {/* change this to get from backend */}
-                    <h1>{getWeekdayLabel(1)}</h1>
+                    <h1>{getWeekdayLabel(date.getDay() + 1)}</h1>
                     <p>You have no upcoming rides today :(</p>
                     <iframe className="gif" src="https://giphy.com/embed/oZ4hsNeuMpkSA" frameBorder="0"></iframe>
                     <button className="findRidersButton"><span>Schedule a Trip</span></button>
