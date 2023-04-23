@@ -7,7 +7,7 @@ import { useNavigate } from 'react-router-dom';
 import { faUser, faCarSide } from '@fortawesome/free-solid-svg-icons';
 import { useDatabase } from "../context/state";
 
-function NavBar(props) {
+function NavBar() {
     // async function fetchUserData() {
     //     let uid = '6443cd3b66d2a4511b0d3837'
     //     try {
@@ -57,16 +57,16 @@ function NavBar(props) {
                 <div className="nav-bar-right">
                     {/* add eco friendly stats */}
                     <div className="dropdown">
-                        <button className="dropProposalbtn" onClick={() => database.navBar.setProfileDropdown()}><FontAwesomeIcon icon={faCarSide} size="lg" /></button>
-                        <div id="profileDropdown" style={{ borderRadius: '15px' }} className={`dropdown-content ${database.navBar.showProfileDropdown ? "showDropdown" : ""}`}>
+                        <button className="dropProposalbtn" onClick={() => context.navBar.setProfileDropdown()}><FontAwesomeIcon icon={faCarSide} size="lg" /></button>
+                        <div id="profileDropdown" style={{ borderRadius: '15px' }} className={`dropdown-content ${context.navBar.showProfileDropdown ? "showDropdown" : ""}`}>
                             {/* {proposals} */}
                             <p style={{ textAlign: "center" }}>No pending requests!</p>
                         </div>
                     </div>
 
                     <div className="dropdown">
-                        <button className="dropbtn" onClick={() => database.navBar.setProposalDropdown()}><FontAwesomeIcon icon={faUser} size="lg" /></button>
-                        <div id="profileDropdown" className={`dropdown-content ${database.navBar.showProposalDropdown ? "showDropdown" : ""}`}>
+                        <button className="dropbtn" onClick={() => context.navBar.setProposalDropdown()}><FontAwesomeIcon icon={faUser} size="lg" /></button>
+                        <div id="profileDropdown" className={`dropdown-content ${context.navBar.showProposalDropdown ? "showDropdown" : ""}`}>
                             <Link to="/profile">View Profile</Link>
                             <Link to="/onboarding">
                                 <button onClick={handleLogOutClick}>Log out</button>
