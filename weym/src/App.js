@@ -1,13 +1,13 @@
-import AppContainer from './pages/appContainer';
+import AppContainer from './pages/appContainer.js';
 import DataWrapper from './context/state';
 import NavBar from './components/NavBar.js';
-import Profile from './components/Profile.js';
-import Onboarding from './components/Onboarding.js';
+import Profile from './pages/Profile.js';
+import Onboarding from './pages/Onboarding.js';
+import LandingPage from './pages/Landing.js';
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import './App.css';
 
 function App() {
-  // <Geocode/>
   return (
     <div className='App'>
       <DataWrapper>
