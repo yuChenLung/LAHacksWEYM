@@ -12,7 +12,6 @@ function NavBar() {
     // const [show, setShow] = React.useState(false);
     const context = useDatabase();
     const navigate = useNavigate();
-    let proposals = null;
 
     const handleSignInClick = (e) => {
         e.preventDefault();
@@ -59,12 +58,12 @@ function NavBar() {
     }
 
     async function handleDropPropClick(e) {
+        e.preventDefault();
         var userData = null;
 
         context.navBar.setProposalDropdown();
         if (!context.navBar.showProposalDropdown) {
             userData = await fetchUserData('644484d880bc9840d9f2b800');
-            console.log(userData);
         }
 
         if (userData && userData.proposedSchedules.length !== 0) {
@@ -82,13 +81,8 @@ function NavBar() {
             context.proposal.updateProposals(schedules);
             context.proposal.updateSendersInfo(senderProposalInfo);
         }
-        console.log(context.proposal.proposals);
-        console.log(context.proposal.sendersProposalInfo);
-
-        proposals = Array.from({ length: context.proposal.sendersProposalInfo["length"] }, (_, index) => {
-            return <ProposalCard key={index} />;
-        });
-        console.log(proposals);
+        // console.log(context.proposal.proposals);
+        // console.log(context.proposal.sendersProposalInfo);
     }
 
     if (context.signIn.signedIn) {
@@ -103,10 +97,9 @@ function NavBar() {
                     <div className="dropdown">
                         <button className="dropProposalbtn" onClick={handleDropPropClick}><FontAwesomeIcon icon={faCarSide} size="lg" /></button>
                         <div id="proposalDropdown" style={{ borderRadius: '15px' }} className={`dropdown-content-proposal dropdown-content ${context.navBar.showProposalDropdown ? "showDropdown" : ""}`}>
-                            {Array.from({ length: context.proposal.sendersProposalInfo["length"] }, (v, index) => {
+                            {context.proposal.sendersProposalInfo["length"] > 0 ? Array.from({ length: context.proposal.sendersProposalInfo["length"] }, (v, index) => {
                                 return <ProposalCard key={index} i={index} />;
-                            })}
-                            {/* <p style={{ textAlign: "center" }}>No pending requests!</p> */}
+                            }) : <p style={{ textAlign: "center" }}>No pending requests!</p>}
                         </div>
                     </div>
 
@@ -135,7 +128,7 @@ function NavBar() {
                 <div className="nav-bar-right">
                     {/* on click func */}
                     <Link to="/onboarding">
-                        <button className="dropbtn" style={{ fontSize: '18px' }} onClick={handleSignInClick}>Sign in <FontAwesomeIcon icon={faUser} size="lg" /></button>
+                        <button className="dropbtn" style={{ fontSize: '16px' }} onClick={handleSignInClick}>Sign in <FontAwesomeIcon icon={faUser} size="lg" /></button>
                     </Link>
                     {/* connect to onboarding page */}
                 </div>

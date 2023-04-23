@@ -64,7 +64,6 @@ function UpcomingTrip() {
         if (numberTrips > 0) {
             return (
                 <div className="tripBox">
-                    {/* change this to get from backend */}
                     <h1>{getWeekdayLabel(date.getDay() + 1)}</h1>
                     <div>{tripCards}</div>
                 </div>
@@ -73,7 +72,6 @@ function UpcomingTrip() {
         else {
             return (
                 <div className="tripBox">
-                    {/* change this to get from backend */}
                     <h1>{getWeekdayLabel(date.getDay() + 1)}</h1>
                     <p>You have no upcoming rides today :(</p>
                     <iframe className="gif" src="https://giphy.com/embed/oZ4hsNeuMpkSA" frameBorder="0"></iframe>

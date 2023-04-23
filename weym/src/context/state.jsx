@@ -7,8 +7,9 @@ export const useDatabase = () => {
 }
 
 const DataWrapper = ({ children }) => {
-  const [scheduleObject, setScheduleObject] = useState(undefined)
-  const [schedulerActive, setSchedulerActive] = useState(false)
+  const [endTime, setEndTime] = useState(undefined)
+  const [startTime, setStartTime] = useState(undefined)
+  const [day, setDay] = useState(undefined)
 
   const [refresh, setRefresh] = useState(0)
 
@@ -52,16 +53,19 @@ const DataWrapper = ({ children }) => {
     }
      */
 
-  const updateScheduler = data => {
-    if (data === undefined) {
-      setScheduleObject(undefined)
-      setSchedulerActive(false)
+  const updateScheduler = (s, e, d) => {
+    if (s === undefined || e === undefined || d === undefined) {
+      setEndTime(undefined)
+      setStartTime(undefined)
+      setDay(undefined)
       setRefresh(refresh + 1)
       return
     }
 
-    setScheduleObject(data)
-    setSchedulerActive(true)
+    setEndTime(e)
+    setStartTime(s)
+    setDay(d)
+    setRefresh(refresh + 1)
   }
 
   const updateUID = data => {
@@ -112,9 +116,10 @@ const DataWrapper = ({ children }) => {
         value={{
           // All of the values listed here are available to be referenced among the children components.
           scheduler: {
-            active: schedulerActive,
-            object: scheduleObject,
-            setObject: updateScheduler
+            startTime: startTime,
+            endTime: endTime,
+            day: day,
+            setSchedule: updateScheduler
           },
           refresh: refresh,
           doRefresh: updateRefresh,
