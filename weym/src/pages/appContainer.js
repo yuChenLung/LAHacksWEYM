@@ -1,16 +1,18 @@
 import React from 'react'
 import Scheduler from '../components/scheduler'
-function AppContainer (){
-    return(
+import UpcomingTrip from '../components/upcomingTrip'
+
+function AppContainer() {
+    return (
         <div>
-            The components of the app will be contained here:
-            <div style={{height: "50px"}}>Temp Nav Bar</div>
-            <div style={{display: 'flex'}}>
-                <div style={{width: window.innerWidth * .28}}>Hello</div>
+            <div style={{ display: 'flex' }}>
+                <div style={{ width: window.innerWidth * .28 }}>
+                    <UpcomingTrip></UpcomingTrip>
+                </div>
                 <Scheduler />
             </div>
         </div>
-        
+
     )
 }
 
