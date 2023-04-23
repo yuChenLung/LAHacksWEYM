@@ -2,6 +2,7 @@ import React from 'react';
 import './components.css';
 import TripCard from './tripCard.js';
 import { useDatabase } from '../context/state';
+import CreateTripForm from './CreateTrip';
 
 function UpcomingTrip() {
     const context = useDatabase()
@@ -23,21 +24,21 @@ function UpcomingTrip() {
                 return "Saturday";
         }
     }
-    var onTrip = true;
-    if (onTrip) {
-        const startHour = Math.floor(context.scheduler.startTime/60)
-        const startMinNum = Math.floor(context.scheduler.startTime%60)
+
+    if (context.scheduler.tripClicked) {
+        const startHour = Math.floor(context.scheduler.startTime / 60)
+        const startMinNum = Math.floor(context.scheduler.startTime % 60)
         const startMinString = startMinNum === 0 ? String(startMinNum) + "0" : String(startMinNum)
         const startTimeLabel = startHour >= 12 ? startHour + ':' + startMinString + " PM" : startHour + ':' + startMinString + " AM";
-        const endHour = Math.floor(context.scheduler.endTime/60)
-        const endMinNum = Math.floor(context.scheduler.startTime%60)
+        const endHour = Math.floor(context.scheduler.endTime / 60)
+        const endMinNum = Math.floor(context.scheduler.startTime % 60)
         const endMinString = endMinNum === 0 ? String(startMinNum) + "0" : String(startMinNum)
         const endTimeLabel = endHour >= 12 ? endHour + ':' + endMinString + " PM" : endHour + ':' + endMinString + " AM";
 
         console.log(startMinNum, startMinString, endMinNum, endMinString)
         return (
             <div className="tripBox">
-                <h1>{getWeekdayLabel(1)}</h1>
+                <h1>{getWeekdayLabel(context.scheduler.day)}</h1>
                 <div className="timeline">
                     <div className="container">
                         <div className="left">
@@ -59,8 +60,16 @@ function UpcomingTrip() {
                 <div className="map">
                 </div>
                 {/* if it is a real schedule ride, show riders instead of carpooler!! */}
-                <button className="findRidersButton"><span>Find a Carpooler</span></button>
+                <div>
+                    <button className="findRidersButton" onClick={() => context.setTripClicked(false)}><span>Back</span></button>
+                    <button className="findRidersButton"><span>Find a Carpool</span></button>
+                </div>
             </div>
+        );
+    }
+    else if (context.createTrip) {
+        return (
+            <CreateTripForm />
         );
     }
     else {
@@ -77,6 +86,7 @@ function UpcomingTrip() {
                 <div className="tripBox">
                     <h1>{getWeekdayLabel(date.getDay() + 1)}</h1>
                     <div>{tripCards}</div>
+                    <button className="findRidersButton" onClick={() => context.setCreateTrip(true)}><span>Schedule a Trip</span></button>
                 </div>
             )
         }
@@ -86,7 +96,7 @@ function UpcomingTrip() {
                     <h1>{getWeekdayLabel(date.getDay() + 1)}</h1>
                     <p>You have no upcoming rides today :(</p>
                     <iframe className="gif" src="https://giphy.com/embed/oZ4hsNeuMpkSA" frameBorder="0"></iframe>
-                    <button className="findRidersButton"><span>Schedule a Trip</span></button>
+                    <button className="findRidersButton" onClick={() => context.setCreateTrip(true)}><span>Schedule a Trip</span></button>
                 </div>
             )
         }
