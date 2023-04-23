@@ -19,7 +19,9 @@ function App() {
             <Route path='/onboarding' element={<Onboarding />} />
             <Route path="/profile" element={<Profile />} />
             <Route path='/app' element={<AppContainer />} />
-            <Route path='/create-trip-form' element={<CreateTripForm/>} /> 
+            <Route path='/create-trip-form' element={
+              <CreateTripForm startTime={30} endTime={60} day={2} />
+            } /> 
           </Routes>
         </BrowserRouter>
       </DataWrapper>

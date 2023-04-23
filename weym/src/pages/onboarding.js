@@ -14,9 +14,7 @@ function Onboarding() {
     }
 
     async function fetchData(jsonData) {
-        console.log(JSON.stringify(jsonData));
         try {
-            console.log(JSON.stringify(jsonData));
             const response = await fetch('http://localhost:8001/register', { 
                 method: 'POST', 
                 body: JSON.stringify(jsonData),
@@ -24,9 +22,6 @@ function Onboarding() {
                     'Content-Type': 'application/json'
                 },
             });
-            // console.log(response);
-            // const responseData = await response.json();
-            // return responseData;
         } catch (error) {
             console.error('Error fetching data:', error);
             return null;
