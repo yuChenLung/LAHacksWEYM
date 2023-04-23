@@ -41,6 +41,7 @@ function NavBar(props) {
                     <Link to="/onboarding">
                         <button className="dropbtn" style={{ fontSize: '18px' }}>Sign in <FontAwesomeIcon icon={faUser} size="lg" /></button>
                     </Link>
+                    <Link to="/create-trip-form">Plan a Trip</Link>
                     {/* connect to onboarding page */}
                 </div>
             </div >
