@@ -9,6 +9,7 @@ export const useDatabase = () => {
 const DataWrapper = ({children}) => {
   const [scheduleObject, setScheduleObject] = useState(undefined)
   const [schedulerActive, setSchedulerActive] = useState(false)
+  const [uid, setUID] = useState(null)
 
   const [refresh, setRefresh] = useState(0)
 
@@ -39,6 +40,11 @@ const DataWrapper = ({children}) => {
         tags: string[]
     }
      */
+    const updateUID = data => {
+        setUID(data)
+        setRefresh(refresh + 1)
+        return
+    }
 
   const updateScheduler = data => {
     if (data === undefined) {
@@ -74,9 +80,11 @@ const DataWrapper = ({children}) => {
             refresh: refresh,
             doRefresh: updateRefresh,
             user: {
+              uid: uid, 
               latitude: latitude,
               longitude: longitude,
               setLocation: updateLocation,
+              setUID: updateUID
             }
           }}
         >

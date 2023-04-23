@@ -5,6 +5,9 @@ import "./scheduler.css";
 import "../../node_modules/react-resizable/css/styles.css";
 
 // every 5 minutes is 1 height => 12 height is one hour
+
+let global_counter = 0
+
 const timeHours = [
   "12 AM",
   "1 AM",
@@ -169,12 +172,14 @@ const gridVertical = timeDay.map((day) => {
 };
 
 const Scheduler = (props) => {
-    const [scheduledTrips, setScheduledTrips] = React.useState([]);
+    const [scheduledTrips, setScheduledTrips] = React.useState(Array());
     const [notDragging, setDragging] = React.useState(false)
     const [isClickingCard, setClicking] = React.useState(false)
     const [isClickingGrid, setClickingGrid] = React.useState(false)
     const [trips, setTrips] = React.useState([]); 
     const database = useDatabase()
+
+    const reference = React.useRef()
     
     function handleCardClick(event) {
       event.stopPropagation()
@@ -186,10 +191,11 @@ const Scheduler = (props) => {
     }
 
     function handleGridClick(event) {
+      console.log("Grid Click (-1)")
       if (isClickingCard === false){
         setClickingGrid(true)
         console.log("Grid Click")
-        createScheduleRequest()
+        createScheduleRequest(event)
       }
     }
 
@@ -285,87 +291,100 @@ const Scheduler = (props) => {
         // })
     }
 
-    function createScheduleRequest(){
-      console.log("Creating schedule request")
-    }
+    function createScheduleRequest(event){
+      setClickingGrid(false)
+      console.log(event.target.parentNode.parentNode.scrollTop)
 
+      let gridXStart = reference.current.offsetLeft + window.innerWidth * .04
+      let gridYStart = reference.current.offsetTop
+    
+      let offset = event.pageY - gridYStart - 13
+      let scrollAmount = event.target.parentNode.parentNode.scrollTop
+
+      let gridXEnd = gridXStart + window.innerWidth * .68
+      let division = (gridXEnd - gridXStart)/7
+      let i = 0
+      for (;i < 7; i+=1){
+        let nextGridX = gridXStart + division
+        console.log(gridXStart, nextGridX)
+        if (event.pageX >= gridXStart && event.pageX < nextGridX){
+          break
+        }
+        gridXStart = nextGridX
+      }
+      
+      let newX = i
+      // Now i refers to the day of the actual event.
+      console.log("Scroll Amount: ", scrollAmount)
+      console.log("Offset: ", offset)
+      let newY = Math.round((scrollAmount + offset)/61) * 6
+      console.log("X, Y: ", newX, newY)
+
+      let newScheduledTrips = scheduledTrips
+      newScheduledTrips.push({i: global_counter, x: newX, y: newY, h: 20, w: 1})
+      global_counter+=1
+      setScheduledTrips(newScheduledTrips)
+
+      database.doRefresh()
+    }
+  
     React.useEffect(() => {
         // This would be replaced with a functional call to retrieve the events from the user collection-base
-        // 
-        setScheduledTrips([{i: 'a', x: 0, y:0, h: 20, w: 1}])
+        //
+        async function fetchData() {
+          let uid = '6443cd3b66d2a4511b0d3837'
+          try {
+              const response = await fetch('http://localhost:8001/' + uid, { 
+                  method: 'GET', 
+                  headers: {
+                      'Content-Type': 'application/json'
+                  },
+              });
+          } catch (error) {
+              console.error('Error fetching data:', error);
+              return null;
+          }
+        let data = await fetchData()
+        console.log(data)
+      }
+        console.log("Setup scheduled trips!")
+        if (scheduledTrips.length === 0){
+          setScheduledTrips([{i: 'b', x: 1, y: 0, h: 20, w: 1}, {i: 'a', x: 5, y: 0, h: 20, w: 1}])
+        }
+        else {
+          setScheduledTrips(scheduledTrips)
+        }
       }, [database.refresh]);
     
-    // let view = scheduledTrips.map((content) => {
-    //   // console.log(firebaseEvents);
-    //   console.log(content)
-    //   //let event = trips.find((element) => element.id === content.i);
-    //   return (
-    //       // TODO: need to call EventCard
-    //       <div
-    //         key={content.i}
-    //         onClick={() => {notDragging ? handleClick(event) : console.log("Currently dragging.")}}
-    //         style={{
-    //             // description
-    //             display: "flex",
-    //             flexDirection: "column",
-    //             alignItems: "flex-start",
-    //             padding: "8px 12px 4px 8px",
-    //             gap: "2px",
-    //             overflowY: "hidden",
+    let view = scheduledTrips.map((content) => {
+      return (
+        <div
+          key={content.i}
+          onClick={(event) => {notDragging ? handleCardClick(event) : console.log("Currently dragging.")}}
+          style={{
+              // description
+              display: "flex",
+              flexDirection: "column",
+              alignItems: "flex-start",
+              padding: "8px 12px 4px 8px",
+              gap: "2px",
+              overflowY: "hidden",
+              background: "red",
 
-    //             // box
-    //             boxSizing: "border-box",
-    //             position: "absolute",
-    //             left: "0%",
-    //             right: "0%",
-    //             top: "0%",
-    //             bottom: "0%",
-    //             borderRadius: "5px",
-    //           }}
-    //       >
-    //       {/* <div
-    //           style={{
-    //           // time
-    //           width: "68px",
-    //           height: "10px",
-    //           fontFamily: "Urbane Rounded",
-    //           fontStyle: "normal",
-    //           fontWeight: "500",
-    //           fontSize: "10px",
-    //           lineHeight: "10px",
+              // box
+              boxSizing: "border-box",
+              position: "absolute",
+              borderRadius: "5px",
+          }}
+        >
+        </div>
+      );
+    })
 
-    //           display: "flex",
-    //           alignItems: "center",
-
-    //           flex: "none",
-    //           order: "0",
-    //           flexGrow: "0",
-    //           }}
-    //       >
-    //           {timeConverter(event?.userStartTime)}
-    //       </div>
-    //       <div
-    //           style={{
-    //           width: "100px",
-    //           height: "48px",
-    //           fontFamily: "Urbane Rounded", // del
-    //           fontStyle: "normal", // del
-    //           fontWeight: "600",
-    //           fontSize: "16px",
-    //           lineHeight: "16px",
-    //           flex: "none", // del
-    //           order: "1",
-    //           flexGrow: "0", // del
-    //           }}
-    //       >
-    //           {event?.name}
-    //       </div> */}
-    //     </div>
-    //   );
-    // });
-
+    let length = scheduledTrips.length
     // console.log(window.innerWidth)
-    // console.log("Scheduled Trips", scheduledTrips)
+    console.log("Scheduled Trips", scheduledTrips)
+    console.log(view)
 
     return (
         <div style={{
@@ -396,7 +415,9 @@ const Scheduler = (props) => {
                 overflowY: "scroll",
                 height: "85vh",
                 overflowX: "hidden",
-            }} className="gridContent">
+            }} 
+                ref={reference}
+                className="gridContent">
                 {/* <div style= {{
                     marginTop: "-20px",
                     height: "2985px",
@@ -408,34 +429,16 @@ const Scheduler = (props) => {
                 <div style={{position: "absolute", paddingLeft: window.innerWidth * .04}}>
                   <GridLayout allowOverlap={true} 
                               resizeHandles={['s']}
-                              onDragStart={() => {setDragging(true)}}
-                              onDragStop={(layout, oldItem, newItem) => onDragStop(layout, oldItem, newItem)} 
+                              onDragStart={() => {setDragging(true); setClickingGrid(false)}}
+                              onDragStop={(layout, oldItem, newItem) => onDragStop(layout, oldItem, newItem)}
+                              onResizeStart={() => {setClickingGrid(false)}}
                               onResizeStop={(element) => onResizeStop(element)}
                               layout={scheduledTrips} 
                               draggable={false} 
                               cols={7} 
                               rowHeight={.335} 
                               width={(window.innerWidth * .68)}>
-                    <div
-                      key={'a'}
-                      onClick={(event) => {notDragging ? handleCardClick(event) : console.log("Currently dragging.")}}
-                      style={{
-                          // description
-                          display: "flex",
-                          flexDirection: "column",
-                          alignItems: "flex-start",
-                          padding: "8px 20px 4px 8px",
-                          gap: "2px",
-                          overflowY: "hidden",
-
-                          backgroundColor: "red",
-
-                          // box
-                          boxSizing: "border-box",
-                          position: "absolute",
-                          borderRadius: "5px",
-                        }}
-                    ></div>
+                    { view }
                   </GridLayout>
                 </div>
                 <div>
