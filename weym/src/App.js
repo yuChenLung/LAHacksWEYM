@@ -8,6 +8,8 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Scheduler from './components/scheduler.js';
 import './App.css';
 
+import CreateTripForm from './components/CreateTrip.js';
+
 function App() {
 
   return (
@@ -21,6 +23,7 @@ function App() {
             <Route path='/onboarding' element={<Onboarding />} />
             <Route path='/profile' element={<Profile />} />
             <Route path='/app' element={<AppContainer />} />
+            <Route path='create-trip' element={<CreateTripForm startTime={30} endTime={60} day={1}/>} />
           </Routes>
         </BrowserRouter>
       </DataWrapper>

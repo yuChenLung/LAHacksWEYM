@@ -103,6 +103,7 @@ function NavBar() {
                             <Link to="/onboarding">
                                 <button onClick={handleLogOutClick}>Log out</button>
                             </Link>
+                            <Link to="/create-trip">Create a Trip</Link>
                             {/* add onclick for login function */}
                         </div>
                     </div>
