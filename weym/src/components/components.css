@@ -66,7 +66,7 @@
   .dropdown-content a:hover {background-color: #ddd;}
   
   /* Show the dropdown menu (use JS to add this class to the .dropdown-content container when the user clicks on the dropdown button) */
-  .show {display:block;}
+  .showDropdown {display:block;}
 
   /* Onboarding CSS */
 
@@ -96,7 +96,7 @@
   }
 
   .horiz-field {
-    padding: 12px 20px;
+    padding: 12px 5px;
     margin: 8px 0;
     box-sizing: border-box;
   }
@@ -110,11 +110,6 @@
     padding: 12px 20px;
     box-sizing: border-box;
     border-radius: 4px;
-  }
-
-  .horiz-field {
-    padding: 12px 0;
-    box-sizing: border-box;
   }
 
   .horiz-field-apt, .horiz-field-zipcode {
@@ -133,8 +128,11 @@
     width: 55px;
   }
 
-  ::placeholder {
-    padding-left: 5px;
+  .form-fields-location {
+    font-size: 15px;
+    display: flex;
+    flex-direction: column;
+    text-align: left;
   }
 
   .firstLabel {
@@ -169,7 +167,17 @@
     transition-duration: 0.4s
   }
 
-  .submitButton:hover, .findRidersButton:hover {
+  .createTripButton {
+    border: 3px solid rgba(111, 209, 123, 0.575);
+    padding: 10px 25px;
+    margin-top: 10px;
+    border-radius: 10px;
+    text-decoration: none;
+    font-size: 16px;
+    transition-duration: 0.4s
+  }
+
+  .submitButton:hover, .findRidersButton:hover, .createTripButton:hover {
     background-color: rgba(111, 209, 123, 0.575); /* Green */
   }
 
@@ -184,8 +192,9 @@
 
   /* Upcoming Trip CSS */
 
-  .tripCard {
+  .tripBox {
     border-radius: 20px;
+    background-color: rgba(111, 209, 122, 0.226);
     border: 3px solid rgba(111, 209, 123, 0.575);
     padding: 20px;
     margin: 20px 35px;
@@ -261,3 +270,79 @@
   margin-top: 170px;
   position: relative;
 }
+
+.gif {
+  display: block;
+  width: 100%;
+  margin: 0 auto;
+}
+
+/* Trip Card CSS */
+.tripCard {
+  border-radius: 25px;
+  background-color: rgba(255, 255, 255, 0.781);
+  padding: 0 10px 15px 10px;
+  margin-bottom: 10px;
+}
+
+.tripCardTitle {
+  display: flex;
+}
+
+.tripCardTime {
+  background-color: rgba(75, 163, 75, 0.712);
+  padding: 10px;
+  font-size: 12px;
+  border-radius: 25px;
+}
+
+.tripCardName {
+  margin-left: 10px;
+  align-self: center;
+}
+
+.tripCardLocation {
+  display: flex;
+  padding-left: 10px;
+  font-size: 12px;
+}
+
+.tripBox-createTrip {
+  border-radius: 20px;
+  background-color: rgba(111, 209, 122, 0.226);
+  border: 3px solid rgba(111, 209, 123, 0.575);
+  padding: 20px;
+  margin: 20px 35px;
+  height: 550px;
+  text-align: center;
+}
+
+/* Sign In Form */
+.show {
+  display: block;
+  position:absolute;
+  transition: 800ms;
+  z-index: 5;
+}
+
+.signInBox {
+  width: 30%;
+  left: 35%;
+  top: 20%;
+  padding: 20px;
+  margin: auto;
+  border-radius: 25px;
+  background-color: rgb(55, 87, 59);
+  color: white;
+}
+
+
+.signIn {
+  display: flex;
+  flex-direction: column;
+}
+
+.hide {
+  display: none;
+}
+

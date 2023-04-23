@@ -14,19 +14,14 @@ function Onboarding() {
     }
 
     async function fetchData(jsonData) {
-        console.log(JSON.stringify(jsonData));
         try {
-            console.log(JSON.stringify(jsonData));
-            const response = await fetch('http://localhost:8001/register', { 
-                method: 'POST', 
+            const response = await fetch('http://localhost:8001/register', {
+                method: 'POST',
                 body: JSON.stringify(jsonData),
                 headers: {
                     'Content-Type': 'application/json'
                 },
             });
-            // console.log(response);
-            // const responseData = await response.json();
-            // return responseData;
         } catch (error) {
             console.error('Error fetching data:', error);
             return null;
@@ -181,7 +176,7 @@ function Onboarding() {
                     />
                 </div>
             </div>
-            <button className="submitButton" type="submit"><span>Submit and Continue</span></button>
+            <button className="submitButton" type="submit"><span>Register</span></button>
         </form>
     );
 }
