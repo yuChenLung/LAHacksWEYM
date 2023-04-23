@@ -75,11 +75,11 @@
   }
 
   .formHeader {
-    font-size: 30px;
+    font-size: 20px;
   }
 
   .formFields {
-    font-size: 20px;
+    font-size: 15px;
     display: flex;
     flex-direction: column;
     width: 40%;
@@ -118,11 +118,11 @@
   }
 
   .horiz-field-address {
-    width: 60%;
+    width: 56.5%;
   }
 
   .horiz-field-city {
-    width: 53%;
+    width: 47%;
   }
 
   .horiz-field-state {
@@ -144,8 +144,9 @@
   .submitButton {
     /* background-color: rgba(111, 209, 123, 0.575); Green */
     border: 3px solid rgba(111, 209, 123, 0.575);
-    margin-top: 20px;
-    padding: 15px 32px;
+    margin-top: 15px;
+    margin-bottom: 20px;
+    padding: 10px 25px;
     border-radius: 10px;
     text-align: center;
     text-decoration: none;

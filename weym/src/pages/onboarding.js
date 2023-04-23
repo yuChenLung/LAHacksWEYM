@@ -108,7 +108,7 @@ export default class Onboarding extends React.Component {
                 </div>
                 {/* maybe have a separator */}
                 <div>
-                    <h1>Home Address</h1>
+                    <h2>Home Address</h2>
                 </div>
                 <div className="formFields">
                     <div className="formRow">

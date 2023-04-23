@@ -2,14 +2,14 @@ import AppContainer from './pages/appContainer.js';
 import DataWrapper from './context/state';
 import NavBar from './components/NavBar.js';
 import Profile from './pages/Profile.js';
-import Onboarding from './pages/Onboarding.js';
-import LandingPage from './pages/Landing.js';
+import Onboarding from './pages/onboarding.js';
+import LandingPage from './pages/landing.js';
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import './App.css';
 
 function App() {
   return (
-    <div className='App'>
+    <div>
       <DataWrapper>
         <BrowserRouter>
           <NavBar signedIn={false} />
