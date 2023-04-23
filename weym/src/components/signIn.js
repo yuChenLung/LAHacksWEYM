@@ -27,6 +27,7 @@ function SignIn() {
                 context.signIn.setShowSignIn(false);
                 localStorage.setItem("userId", response.userId);
                 localStorage.setItem("signedIn", true);
+                navigate('/app');
             }
         } catch (error) {
             console.error('Error fetching data:', error);
