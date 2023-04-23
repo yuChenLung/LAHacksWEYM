@@ -5,6 +5,7 @@ const ObjectId = mongoose.Types.ObjectId;
 const { User, validateLogin, validateRegister} = require("../models/user.js");
 const { Schedule, validateSchedule} = require("../models/schedule.js");
 const { PlannedSchedule, validatePlannedScheduleReq} = require("../models/plannedSchedule.js");
+// const {getLatLng} = require("../../weym/src/Geocoding/getlatlng.js");
 //GET REQUESTS
 
 // to get the people near you

@@ -28,9 +28,6 @@ const UserSchema = new mongoose.Schema({
     	minLength: 5,
     	maxLength: 20
     },
-    schedules : {
-        type: Array,
-    },
     phone: Number,
     milesTraveled: Number,
     lateTime: Number,
@@ -40,6 +37,7 @@ const UserSchema = new mongoose.Schema({
     longitude: Number,
     schedules: [{ type : mongoose.Schema.Types.ObjectId, ref: 'Schedule' }],
     plannedSchedules: [{ type : mongoose.Schema.Types.ObjectId, ref: 'plannedSchedule' }],
+    proposedSchedules: [{ type : mongoose.Schema.Types.ObjectId, ref: 'plannedSchedule' }]
 });
 
 UserSchema.methods.validatePassword = function(password) {

@@ -19,13 +19,13 @@ router.post("/schedule", async (req, res) => {
 	const { error } = validateSchedule(req.body);
     if (error) return res.status(400).send(error.details[0].message);
 
-	var plannedSchedule = await PlannedSchedule.findById(req.body.scheduleId);
+	var plannedSchedule = await PlannedSchedule.findById(req.body.proposalId);
     if (!plannedSchedule) return res.status(400).send("PSchedule doesn't exist.");
 	console.log("Creating a Schedule!")
     // validate the request body first
     
     schedule = new Schedule({
-    	users: [plannedSchedule.user, req.body.userId], //objId of user
+    	users: [plannedSchedule.user, req.body.receiverId], //objId of user
     	startTime: plannedSchedule.startTime,
     	endTime: plannedSchedule.endTime,
     	day: plannedSchedule.day,
@@ -33,7 +33,8 @@ router.post("/schedule", async (req, res) => {
     	destination: plannedSchedule.destination,
     });
     schedule.save();
-    User.findOneAndUpdate({_id: req.body.userId}, {$push: {schedules: schedule}},
+    User.findOneAndUpdate({_id: req.body.receiverId}, {$push: {schedules: schedule},
+    	$pull: {proposedSchedules: req.body.proposalId}},
 		function (error, success) {
 		    if (error) {
 		        console.log(error);
@@ -42,7 +43,8 @@ router.post("/schedule", async (req, res) => {
 		        console.log(success);
 		    }
 		});
-    User.findOneAndUpdate({_id: plannedSchedule.user}, {$push: {schedules: schedule}, $pull: {plannedSchedules: req.body.scheduleId}},
+    User.findOneAndUpdate({_id: plannedSchedule.user}, {$push: {schedules: schedule}, 
+    	$pull: {plannedSchedules: req.body.proposalId}},
 		function (error, success) {
 		    if (error) {
 		        console.log(error);
@@ -52,7 +54,7 @@ router.post("/schedule", async (req, res) => {
 		    }
 		});
 	console.log("deleting probl idk");
-	PlannedSchedule.findByIdAndDelete(req.body.scheduleId, function (err) {
+	PlannedSchedule.findByIdAndDelete(req.body.proposalId, function (err) {
 	  if (err) {
 	    console.log(err);
 	    return res.status(400).send("You failed.");

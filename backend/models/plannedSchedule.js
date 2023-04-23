@@ -33,6 +33,14 @@ function validatePlannedScheduleReq(schedule) {
     return schema.validate(schedule);
 }
 
+function validateProposal(proposal) {
+    const schema = Joi.object({
+        receiverId: Joi.string().max(255).required(),
+        proposalId: Joi.string().max(255).required() //id of the proposed schedule
+    });
+    return schema.validate(proposal);
+}
+
 function validatePlannedScheduleUpdate(potentialUpdates) {
     const schema = Joi.object({
         Id: Joi.string().max(80).required(),
@@ -51,4 +59,5 @@ module.exports = {
     PlannedSchedule: PlannedSchedule,
     validatePlannedScheduleReq: validatePlannedScheduleReq,
     validatePlannedScheduleUpdate: validatePlannedScheduleUpdate,
+    validateProposal: validateProposal
 }
