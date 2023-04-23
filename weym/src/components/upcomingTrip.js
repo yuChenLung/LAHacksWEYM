@@ -26,13 +26,15 @@ function UpcomingTrip() {
     var onTrip = true;
     if (onTrip) {
         const startHour = Math.floor(context.scheduler.startTime/60)
-        const startMinNum = Math.floor(context.scheduler.startTime/60)
+        const startMinNum = Math.floor(context.scheduler.startTime%60)
         const startMinString = startMinNum === 0 ? String(startMinNum) + "0" : String(startMinNum)
-        const startTimeLabel = startHour >= 12 ? startHour + ':' + startMinString + " PM" : startHour + ':' + context.scheduler.startTime % 60 + " AM";
+        const startTimeLabel = startHour >= 12 ? startHour + ':' + startMinString + " PM" : startHour + ':' + startMinString + " AM";
         const endHour = Math.floor(context.scheduler.endTime/60)
-        const endMinNum = Math.floor(context.scheduler.startTime/60)
+        const endMinNum = Math.floor(context.scheduler.startTime%60)
         const endMinString = endMinNum === 0 ? String(startMinNum) + "0" : String(startMinNum)
-        const endTimeLabel = endHour >= 12 ? endHour + ':' + endMinString + " PM" : endHour + ':' + context.scheduler.endTime % 60 + " AM";
+        const endTimeLabel = endHour >= 12 ? endHour + ':' + endMinString + " PM" : endHour + ':' + endMinString + " AM";
+
+        console.log(startMinNum, startMinString, endMinNum, endMinString)
         return (
             <div className="tripBox">
                 <h1>{getWeekdayLabel(1)}</h1>
