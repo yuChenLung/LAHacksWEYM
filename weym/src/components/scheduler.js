@@ -142,31 +142,6 @@ const gridVertical = timeDay.map((day) => {
       return [startTime, endTime]
   }
 
-  const timeConverter = (time) => {
-    time = time.split(":"); // convert to array
-
-    // fetch
-    var hours = Number(time[0]);
-    var minutes = Number(time[1]);
-    var seconds = Number(time[2]);
-
-    // calculate
-    var timeValue;
-
-    if (hours > 0 && hours <= 12) {
-    timeValue = "" + hours;
-    } else if (hours > 12) {
-    timeValue = "" + (hours - 12);
-    } else if (hours == 0) {
-    timeValue = "12";
-    }
-
-    timeValue += minutes < 10 ? ":0" + minutes : ":" + minutes; // get minutes
-    timeValue += hours >= 12 ? " PM" : " AM"; // get AM/PM
-
-    return timeValue;
-};
-
 const Scheduler = (props) => {
     const [scheduledTrips, setScheduledTrips] = React.useState([]);
     const [notDragging, setDragging] = React.useState(false)
@@ -359,7 +334,7 @@ const Scheduler = (props) => {
               let json = await response.json()
               let planned = []
               console.log(json)
-              context.updatePlannedEvents(json.plannedSchedules)
+              context.matches.updatePlannedEvents(json.plannedSchedules)
               for (let i = 0; i < json.plannedSchedules.length; i+=1){
                 console.log(json.plannedSchedules[i])
                 let content = await fetchSchedule(json.plannedSchedules[i])
@@ -396,7 +371,7 @@ const Scheduler = (props) => {
                 boxSizing: "border-box",
                 position: "absolute",
                 borderRadius: "5px",
-                background: "red",
+                background: "#d83131",
               }}
           >
           </div>
