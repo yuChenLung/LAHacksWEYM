@@ -24,6 +24,9 @@ const DataWrapper = ({ children }) => {
 
   const [validCredentials, setValidCredentials] = useState(true)
 
+  const [proposals, setProposals] = useState([])
+  const [sendersProposalInfo, setSendersInfo] = useState([])
+
   useEffect(() => {
     // Whenever a value is updated (i.e. the scheduler data, or the geolocation, it will call this use effect)
     console.log("Filler code")
@@ -95,6 +98,14 @@ const DataWrapper = ({ children }) => {
     setValidCredentials(valid)
   }
 
+  const updateProposals = (proposals) => {
+    setProposals(proposals)
+  }
+
+  const updateSendersInfo = (sendersInfo) => {
+    setSendersInfo(sendersInfo)
+  }
+
   return (
     <div>
       <dataState.Provider
@@ -129,7 +140,13 @@ const DataWrapper = ({ children }) => {
           credentials: {
             validCredentials: validCredentials,
             setValidCredentials: updateValidCredentials,
-          }
+          },
+          proposal: {
+            proposals: proposals,
+            updateProposals: updateProposals,
+            sendersProposalInfo: sendersProposalInfo,
+            updateSendersInfo: updateSendersInfo,
+          },
         }}
       >
         {children}

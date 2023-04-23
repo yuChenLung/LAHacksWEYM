@@ -6,11 +6,13 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { useNavigate } from 'react-router-dom';
 import { faUser, faCarSide } from '@fortawesome/free-solid-svg-icons';
 import { useDatabase } from "../context/state";
+import ProposalCard from './proposalCard';
 
 function NavBar() {
     // const [show, setShow] = React.useState(false);
     const context = useDatabase();
     const navigate = useNavigate();
+    let proposals = null;
 
     const handleSignInClick = (e) => {
         e.preventDefault();
@@ -77,10 +79,17 @@ function NavBar() {
                 schedules.push(currProp);
                 senderProposalInfo.push(currPropSender);
             }
-            // Make a useState to save schedules
+            context.proposal.updateProposals(schedules);
+            context.proposal.updateSendersInfo(senderProposalInfo);
         }
-    }
+        console.log(context.proposal.proposals);
+        console.log(context.proposal.sendersProposalInfo);
 
+        proposals = Array.from({ length: context.proposal.sendersProposalInfo["length"] }, (_, index) => {
+            return <ProposalCard key={index} />;
+        });
+        console.log(proposals);
+    }
 
     if (context.signIn.signedIn) {
         return (
@@ -93,9 +102,11 @@ function NavBar() {
                     {/* add eco friendly stats */}
                     <div className="dropdown">
                         <button className="dropProposalbtn" onClick={handleDropPropClick}><FontAwesomeIcon icon={faCarSide} size="lg" /></button>
-                        <div id="proposalDropdown" style={{ borderRadius: '15px' }} className={`dropdown-content ${context.navBar.showProposalDropdown ? "showDropdown" : ""}`}>
-                            {/* {proposals} */}
-                            <p style={{ textAlign: "center" }}>No pending requests!</p>
+                        <div id="proposalDropdown" style={{ borderRadius: '15px' }} className={`dropdown-content-proposal dropdown-content ${context.navBar.showProposalDropdown ? "showDropdown" : ""}`}>
+                            {Array.from({ length: context.proposal.sendersProposalInfo["length"] }, (v, index) => {
+                                return <ProposalCard key={index} i={index} />;
+                            })}
+                            {/* <p style={{ textAlign: "center" }}>No pending requests!</p> */}
                         </div>
                     </div>
 

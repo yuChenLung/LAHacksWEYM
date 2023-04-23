@@ -356,3 +356,34 @@
   display: none;
 }
 
+.dropdown-content-proposal {
+  min-width: 300px !important;
+} 
+
+.proposalCardRow {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.proposalCard {
+  border-radius: 25px;
+  background-color: rgba(255, 255, 255, 0.781);
+  padding: 0px 15px 5px;
+  margin: 10px;
+}
+
+.proposalCardButton {
+    padding: 7px 10px;
+    margin: 3px;
+    border: none;
+    border-radius: 25px;
+}
+
+.accept {
+  background-color: rgba(111, 209, 123, 0.575);
+}
+
+.reject {
+  background-color: rgba(247, 76, 76, 0.753);
+}
