@@ -334,6 +334,7 @@ const Scheduler = (props) => {
         let json = await response.json()
         let planned = []
         console.log(json)
+        console.log("HET", json.plannedSchedules)
         context.matches.updatePlannedEvents(json.plannedSchedules)
         for (let i = 0; i < json.plannedSchedules.length; i += 1) {
           console.log(json.plannedSchedules[i])

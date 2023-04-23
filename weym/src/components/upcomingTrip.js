@@ -1,6 +1,7 @@
 import React from 'react';
 import './components.css';
 import TripCard from './tripCard.js';
+import PlanTripCard from './planTripCard';
 import { useDatabase } from '../context/state';
 import CreateTripForm from './CreateTrip';
 
@@ -58,11 +59,9 @@ function UpcomingTrip() {
                     <p>end time</p> */}
                 </div>
                 <div className="matches">
-                    <div>
-                        {context.matches.plannedEvents["length"] > 0 ? Array.from({ length: context.matches.plannedEvents["length"] }, (v, index) => {
-                            return <TripCard key={index} i={index} />;
-                        }) : <p style={{ textAlign: "center" }}>No planned events!</p>}
-                    </div>
+                    {context.matches.plannedEvents["length"] > 0 ? context.matches.plannedEvents.map((event, index) => {
+                        return <PlanTripCard key={index} i={index} oid={event}/>;
+                    }) : <p style={{ textAlign: "center" }}>No planned events!</p>}
                 </div>
                 {/* if it is a real schedule ride, show riders instead of carpooler!! */}
                 <div>
