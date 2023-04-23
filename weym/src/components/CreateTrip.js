@@ -1,6 +1,6 @@
 import './components.css';
 import { useDatabase } from '../context/state';
-import getLatLng from '../geocoding/getlatlng';
+import getLatLng from '../Geocoding/getlatlng';
 
 function CreateTripForm(props) {
     const context = useDatabase();
