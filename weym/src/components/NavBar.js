@@ -3,7 +3,7 @@ import logo from '../logo.svg';
 import { Link } from 'react-router-dom';
 import './components.css';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faUser, faCarSide } from '@fortawesome/free-solid-svg-icons';
+import { faUser, faCarSide, faCat } from '@fortawesome/free-solid-svg-icons';
 import { useDatabase } from "../context/state";
 
 function NavBar(props) {
@@ -36,16 +36,12 @@ function NavBar(props) {
         database.signIn.setSignIn();
     }
 
-    // const proposals = Array.from({ length: numProposals }, (_, index) => {
-    //     return <ProposalCard key={index} />;
-    // });
-
     if (props.signedIn) {
         return (
             // JSX code to render component goes here
             <div className="nav-bar">
                 <div className="nav-bar-left">
-                    <Link to="/"><img src={logo} width="100px" /></Link>
+                    <Link to="/"><FontAwesomeIcon className="fa-light" style={{ color: 'white' }} icon={faCat} /></Link>
                 </div>
                 <div className="nav-bar-right">
                     {/* add eco friendly stats */}

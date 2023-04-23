@@ -13,6 +13,8 @@
 .nav-bar-left {
     float: left;
     margin-left: 10px;
+    font-size: 30px;
+    padding: 20px 15px;
 }
 
 .nav-bar-right {
@@ -361,30 +363,32 @@
   grid-area: header;
  }
 .landingFooter { 
-  grid-area: footer; 
+  grid-area: footer;
 }
 .landingMain { grid-area: main; }
 .landingRight { grid-area: right; }
 
 .grid-container {
   display: grid;
+  border-radius: 25px;
   grid-template-areas:
     'header header header header header'
     'main main main right right '
-    'main main main right right'
-    'footer footer footer footer footer';
-  gap: 10px;
-  background-color: #2196F3;
-  padding: 10px;
-  width: 90%;
+    'main main main footer footer';
+  background-color: rgba(54, 163, 78, 0.705);
+  width: 95%;
   margin-top: 15px !important;
   margin: auto;
+  font-family: 'Courier';
 }
 
 .grid-container > div {
   background-color: rgba(255, 255, 255, 0.8);
   text-align: left;
-  padding: 20px 20px;
+  padding: 0 20px;
   font-size: 30px;
 }
 
+.landingText {
+  font-size: 18px;
+}
