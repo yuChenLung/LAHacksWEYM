@@ -146,7 +146,6 @@
   }
 
   .submitButton {
-    /* background-color: rgba(111, 209, 123, 0.575); Green */
     border: 3px solid rgba(111, 209, 123, 0.575);
     margin-top: 15px;
     margin-bottom: 20px;
@@ -159,7 +158,18 @@
     transition-duration: 0.4s;
   }
 
-  .submitButton:hover {
+  .findRidersButton {
+    border: 3px solid rgba(111, 209, 123, 0.575);
+    padding: 10px 25px;
+    margin-top: 20px;
+    border-radius: 10px;
+    text-align: center;
+    text-decoration: none;
+    font-size: 16px;
+    transition-duration: 0.4s
+  }
+
+  .submitButton:hover, .findRidersButton:hover {
     background-color: rgba(111, 209, 123, 0.575); /* Green */
   }
 
@@ -179,7 +189,8 @@
     border: 3px solid rgba(111, 209, 123, 0.575);
     padding: 20px;
     margin: 20px 35px;
-    height: 570px;
+    height: 550px;
+    text-align: center;
   }
 
   /* The actual timeline (the vertical ruler) */
@@ -242,4 +253,11 @@
   margin-left: 120px;
   margin-top: -40px;
   width: 100%;
+}
+
+.map {
+  background-color: green;
+  height: 250px;
+  margin-top: 170px;
+  position: relative;
 }

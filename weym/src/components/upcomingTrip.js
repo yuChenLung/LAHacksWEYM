@@ -23,7 +23,6 @@ function UpcomingTrip() {
 
     return (
         <div className="tripCard">
-            {/* current day label <h4></h4> */}
             <h1>{getWeekdayLabel(1)}</h1>
             <div className="timeline">
                 <div className="container">
@@ -40,10 +39,12 @@ function UpcomingTrip() {
                     <span class="dot"></span>
                     <p className="location">end location</p>
                 </div>
-
                 {/* <p>start time</p>
                 <p>end time</p> */}
             </div>
+            <div className="map">
+            </div>
+            <button className="findRidersButton"><span>Find a Carpooler</span></button>
         </div>
     );
 }
