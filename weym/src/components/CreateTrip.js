@@ -103,6 +103,7 @@ function CreateTripForm() {
                         placeholder="Enter a destination"
                     />
                 </div>
+                <button className="findRidersButton" onClick={() => context.setCreateTrip(false)}><span>Back</span></button>
                 <button className="createTripButton" type="submit">Submit</button>
             </form>
         </div>

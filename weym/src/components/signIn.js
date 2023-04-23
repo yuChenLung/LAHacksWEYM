@@ -3,6 +3,8 @@ import './components.css';
 import { useDatabase } from "../context/state";
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faX } from '@fortawesome/free-solid-svg-icons';
 
 function SignIn() {
     const context = useDatabase();
@@ -60,8 +62,20 @@ function SignIn() {
         }
     }
 
+    const handleRegisterClick = (e) => {
+        e.preventDefault();
+        context.signIn.setShowSignIn(false);
+        navigate('/onboarding');
+    }
+
+    const handleCloseClick = (e) => {
+        e.preventDefault();
+        context.signIn.setShowSignIn(false);
+    }
+
     return (
         <div className={`${context.signIn.showSignIn ? "show" : "hide"} signInBox`}>
+            <button className="closeButton" onClick={handleCloseClick}><FontAwesomeIcon icon={faX} /></button>
             <h1 style={{ textAlign: 'center' }}>Sign In</h1>
             <form className="signIn" onSubmit={handleSubmit}>
                 <label>Email:</label>
@@ -79,6 +93,7 @@ function SignIn() {
                     placeholder="Enter your password"
                 />
                 <button className="submitButton" type="submit">Sign in</button>
+                <button className="submitButton" onClick={handleRegisterClick}>or Register Here</button>
             </form>
         </div>
     )

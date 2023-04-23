@@ -121,13 +121,15 @@ function Onboarding() {
                     required={true}
                 />
                 <p id="passwordError" className="passwordValidate">error: passwords must match</p>
-                {/* ideally, this should be a dropdown w existing organizations */}
+
                 <label>Organization</label>
-                <select name="organization" defaultValue="none">
-                    <option value="none">None</option>
-                    <option value="Google Inc.">Google Inc.</option>
-                    <option value="lime">School</option>
-                </select>
+                <input
+                    className="horiz-field"
+                    type="text"
+                    placeholder="Opt: enter your organization affiliation"
+                    name="organization"
+                    required={false}
+                />
             </div>
             {/* maybe have a separator */}
             <div>
