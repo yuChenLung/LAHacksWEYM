@@ -4,6 +4,7 @@ import { useDatabase } from "../context/state"
 import "./scheduler.css";
 import "../../node_modules/react-resizable/css/styles.css";
 
+
 // every 5 minutes is 1 height => 12 height is one hour
 
 let global_counter = 0
@@ -104,17 +105,12 @@ const gridVertical = timeDay.map((day) => {
 })
 
     // Mainly for the initialization state when a user has already added or changed events in the user collection (saved)
-    function dateToCoord (data){
-      let start = 0
-      data.userStartTime.length === 8 ? 
-          start = (Number(data.userStartTime[0] + data.userStartTime[1]) * 12) + (Number(data.userStartTime[3] + data.userStartTime[4])/5) : 
-          start = (Number(data.userStartTime[0]) * 12) + (Number(data.userStartTime[2] + data.userStartTime[3])/5)
-      let end = 0
-      data.userEndTime.length === 8 ? 
-          end = (Number(data.userEndTime[0] + data.userEndTime[1]) * 12) + (Number(data.userEndTime[3] + data.userEndTime[4])/5) : 
-          end = (Number(data.userEndTime[0]) * 12) + (Number(data.userEndTime[2] + data.userEndTime[3])/5)
-      let date = new Date(data.userDate.replace(/-/g,'\/'))
-      return {i: data.id, x: date.getDay(), y: start, w: 1, h: end - start + 1}
+  function dataToCoord (data){
+    let x = data.day - 1
+    let y = data.startTime / 5
+    let h = (data.endTime - data.startTime) / 6
+    let i = data._id
+    return {i: i, x: x, y: y, h: h, w: 1}
   }
 
   // Function primarily used in the situation where the event is resized or redragged to update the database in the user's collection.
@@ -172,11 +168,12 @@ const gridVertical = timeDay.map((day) => {
 };
 
 const Scheduler = (props) => {
-    const [scheduledTrips, setScheduledTrips] = React.useState(Array());
+    const [scheduledTrips, setScheduledTrips] = React.useState([]);
     const [notDragging, setDragging] = React.useState(false)
     const [isClickingCard, setClicking] = React.useState(false)
     const [isClickingGrid, setClickingGrid] = React.useState(false)
     const [trips, setTrips] = React.useState([]); 
+    const [numTrips, setNumTrips] = React.useState(0)
     const database = useDatabase()
 
     const reference = React.useRef()
@@ -291,9 +288,24 @@ const Scheduler = (props) => {
         // })
     }
 
-    function createScheduleRequest(event){
+    async function createScheduleRequest(event){
+      async function postData(jsonData){
+        try {
+          const response = await fetch('http://localhost:8001/pschedule', { 
+              method: 'POST', 
+              body: JSON.stringify(jsonData),
+              headers: {
+                  'Content-Type': 'application/json'
+              },
+          });
+          console.log(response)
+        } catch (error) {
+            console.error('Error fetching data:', error);
+            return null;
+        }
+      }
       setClickingGrid(false)
-      console.log(event.target.parentNode.parentNode.scrollTop)
+      // console.log(event.target.parentNode.parentNode.scrollTop)
 
       let gridXStart = reference.current.offsetLeft + window.innerWidth * .04
       let gridYStart = reference.current.offsetTop
@@ -323,7 +335,30 @@ const Scheduler = (props) => {
       let newScheduledTrips = scheduledTrips
       newScheduledTrips.push({i: global_counter, x: newX, y: newY, h: 20, w: 1})
       global_counter+=1
+
+      let uid = '64450e42dae8d7fcbb04043f'
+      const formattedJson = {
+        user:  uid,
+        startTime: newY * 5,
+        endTime: 60 + newY * 5,
+        day: newX + 1,
+        startLocation: "home",
+        destination: "school"
+      }
+      console.log(formattedJson);
+      //format json object
+
+      // Send post request to database
+      try {
+          const response = await postData(formattedJson);
+          console.log(response);
+          // Handle the response data here
+      } catch (error) {
+          console.error('Error fetching data:', error);
+          // Handle the error here
+      }
       setScheduledTrips(newScheduledTrips)
+      setNumTrips(numTrips + 1)
 
       database.doRefresh()
     }
@@ -332,7 +367,7 @@ const Scheduler = (props) => {
         // This would be replaced with a functional call to retrieve the events from the user collection-base
         //
         async function fetchData() {
-          let uid = '6443cd3b66d2a4511b0d3837'
+          let uid = '64450e42dae8d7fcbb04043f'
           try {
               const response = await fetch('http://localhost:8001/' + uid, { 
                   method: 'GET', 
@@ -340,50 +375,70 @@ const Scheduler = (props) => {
                       'Content-Type': 'application/json'
                   },
               });
+              let json = await response.json()
+              let planned = []
+              console.log(json)
+              for (let i = 0; i < json.plannedSchedules.length; i+=1){
+                console.log(json.plannedSchedules[i])
+                let content = await fetchSchedule(json.plannedSchedules[i])
+                planned.push(dataToCoord(content))
+              }
+
+              setScheduledTrips(planned)
+              setNumTrips(json.plannedSchedules.length)
+          } catch (error) {
+              console.error('Error fetching data:', error);
+              return null;
+            }
+        };
+      
+        async function fetchSchedule(id) {
+          try {
+              const response = await fetch('http://localhost:8001/pschedule/' + id, { 
+                  method: 'GET', 
+                  headers: {
+                      'Content-Type': 'application/json'
+                  },
+              });
+              let json = await response.json()
+              return json
           } catch (error) {
               console.error('Error fetching data:', error);
               return null;
           }
-        let data = await fetchData()
-        console.log(data)
-      }
-        console.log("Setup scheduled trips!")
-        if (scheduledTrips.length === 0){
-          setScheduledTrips([{i: 'b', x: 1, y: 0, h: 20, w: 1}, {i: 'a', x: 5, y: 0, h: 20, w: 1}])
-        }
-        else {
-          setScheduledTrips(scheduledTrips)
-        }
-      }, [database.refresh]);
-    
-    let view = scheduledTrips.map((content) => {
-      return (
+        };
+        fetchData()
+    }, [database.refresh]);
+
+    console.log(numTrips)
+    let view = []
+    for (let index = 0; index < numTrips; index++){
+      view.push(
         <div
-          key={content.i}
-          onClick={(event) => {notDragging ? handleCardClick(event) : console.log("Currently dragging.")}}
-          style={{
-              // description
-              display: "flex",
-              flexDirection: "column",
-              alignItems: "flex-start",
-              padding: "8px 12px 4px 8px",
-              gap: "2px",
-              overflowY: "hidden",
-              background: "red",
+            key={scheduledTrips[index].i}
+            onClick={(event) => {notDragging ? handleCardClick(event) : console.log("Currently dragging.")}}
+            style={{
+                // description
+                display: "flex",
+                flexDirection: "column",
+                alignItems: "flex-start",
+                padding: "8px 12px 4px 8px",
+                gap: "2px",
+                overflowY: "hidden",
 
-              // box
-              boxSizing: "border-box",
-              position: "absolute",
-              borderRadius: "5px",
-          }}
-        >
-        </div>
-      );
-    })
+                // box
+                boxSizing: "border-box",
+                position: "absolute",
+                borderRadius: "5px",
+                background: "red",
+              }}
+          >
+          </div>
+      )
+    }
 
-    let length = scheduledTrips.length
-    // console.log(window.innerWidth)
-    console.log("Scheduled Trips", scheduledTrips)
+    console.log(scheduledTrips)
+    console.log(numTrips)
     console.log(view)
 
     return (
