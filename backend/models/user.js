@@ -60,7 +60,7 @@ function validateUserRegister(user) {
         lastName: Joi.string().min(1).max(50).required(),
         email: Joi.string().max(50).required(),
         password: Joi.string().min(3).max(255).required(),
-        adddress: Joi.string().min(3).max(255).required(),
+        address: Joi.string().min(3).max(255).required(),
         organization: Joi.string().min(2).max(255).required()
     });
     return schema.validate(user);
