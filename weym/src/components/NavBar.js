@@ -44,7 +44,7 @@ function NavBar() {
 
     async function fetchUserData(uid) {
         try {
-            const response = await fetch('http://localhost:8001/' + uid, { //context.user.uid, { 
+            const response = await fetch('http://localhost:8001/' + uid, {
                 method: 'GET',
                 headers: {
                     'Content-Type': 'application/json'
