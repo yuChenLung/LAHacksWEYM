@@ -5,17 +5,26 @@ import './components.css';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faUser } from '@fortawesome/free-solid-svg-icons';
 import { useDatabase } from '../context/state';
+import { useNavigate } from 'react-router-dom';
 
 function NavBar(props) {
     const [show, setShow] = React.useState(false);
     const context = useDatabase();
+    const navigate = useNavigate();
 
     const handleSignInClick = (e) => {
         e.preventDefault();
-        context.signIn.setSignIn();
+        context.signIn.setShowSignIn();
     }
 
-    if (props.signedIn) {
+    const handleLogOutClick = (e) => {
+        e.preventDefault();
+        context.signIn.setSignedIn();
+        context.user.setUID('');
+        navigate('/onboarding');
+    }
+
+    if (context.signIn.signedIn) {
         return (
             // JSX code to render component goes here
             <div className="nav-bar">
@@ -28,7 +37,9 @@ function NavBar(props) {
                         <button className="dropbtn" onClick={() => setShow(!show)}><FontAwesomeIcon icon={faUser} size="lg" /></button>
                         <div id="profileDropdown" className={`dropdown-content ${show ? "showDropdown" : ""}`}>
                             <Link to="/profile">View Profile</Link>
-                            <Link to="/">Log out</Link>
+                            <Link to="/onboarding">
+                                <button onClick={handleLogOutClick}>Log out</button>
+                            </Link>
                             {/* add onclick for login function */}
                         </div>
                     </div>
@@ -48,7 +59,6 @@ function NavBar(props) {
                     <Link to="/onboarding">
                         <button className="dropbtn" style={{ fontSize: '18px' }} onClick={handleSignInClick}>Sign in <FontAwesomeIcon icon={faUser} size="lg" /></button>
                     </Link>
-                    <Link to="/create-trip-form">Plan a Trip</Link>
                     {/* connect to onboarding page */}
                 </div>
             </div >

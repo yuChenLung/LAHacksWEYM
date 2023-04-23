@@ -16,7 +16,8 @@ const DataWrapper = ({ children }) => {
   const [longitude, setLongitude] = useState(-118.448699)
 
   const [uid, setUserID] = useState('')
-  const [showSignIn, setShowSignIn] = useState(false)
+  const [signedIn, setSignedIn] = useState(false)
+  const [showSignedIn, setShowSignedIn] = useState(false)
 
   useEffect(() => {
     // Whenever a value is updated (i.e. the scheduler data, or the geolocation, it will call this use effect)
@@ -69,8 +70,12 @@ const DataWrapper = ({ children }) => {
     setRefresh(refresh + 1)
   }
 
+  const updateSignIn = () => {
+    setSignedIn(!signedIn)
+  }
+
   const updateShowSignIn = () => {
-    setShowSignIn(!showSignIn)
+    setShowSignedIn(!showSignedIn)
   }
 
   return (
@@ -93,8 +98,10 @@ const DataWrapper = ({ children }) => {
             setUID: updateUID,
           },
           signIn: {
-            showSignIn: showSignIn,
-            setSignIn: updateShowSignIn,
+            signedIn: signedIn,
+            showSignIn: showSignedIn,
+            setSignedIn: updateSignIn,
+            setShowSignIn: updateShowSignIn,
           }
 
         }}

@@ -3,9 +3,9 @@ import DataWrapper from './context/state';
 import NavBar from './components/NavBar.js';
 import Profile from './pages/Profile.js';
 import Onboarding from './pages/onboarding.js';
-import LandingPage from './pages/landing.js';
 import SignIn from './components/signIn.js';
 import { BrowserRouter, Routes, Route } from "react-router-dom";
+import Scheduler from './components/scheduler.js';
 import './App.css';
 
 function App() {
