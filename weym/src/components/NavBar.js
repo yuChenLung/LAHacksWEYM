@@ -22,7 +22,7 @@ function NavBar() {
         e.preventDefault();
         context.signIn.setSignedIn();
         context.user.setUID('');
-        context.signIn.setProfileDropdown();
+        context.navBar.setProfileDropdown();
         localStorage.clear();
         navigate('/onboarding');
     }
@@ -97,7 +97,7 @@ function NavBar() {
             // JSX code to render component goes here
             <div className="nav-bar">
                 <div className="nav-bar-left">
-                    <Link to="/"><FontAwesomeIcon className="fa-light" style={{ color: 'white' }} icon={faCat} /></Link>
+                    <Link to="/app"><FontAwesomeIcon className="fa-light" style={{ color: 'white' }} icon={faCat} /></Link>
                 </div>
                 <div className="nav-bar-right">
                     {/* add eco friendly stats */}
@@ -113,7 +113,6 @@ function NavBar() {
                     <div className="dropdown">
                         <button className="dropbtn" onClick={() => context.navBar.setProfileDropdown()}><FontAwesomeIcon icon={faUser} size="lg" /></button>
                         <div id="profileDropdown" className={`dropdown-content ${context.navBar.showProfileDropdown ? "showDropdown" : ""}`}>
-                            <Link to="/create-trip" onClick={handleProfileClick}>Create a Trip</Link>
                             <Link to="/profile" onClick={handleProfileClick}>View Profile</Link>
                             <Link to="/onboarding" onClick={handleLogOutClick}>Log out</Link>
                         </div>
@@ -127,7 +126,7 @@ function NavBar() {
             // JSX code to render component goes here
             <div className="nav-bar">
                 <div className="nav-bar-left">
-                    <Link to="/onboarding"><img src={logo} width="100px" alt="Carpool Logo" /></Link>
+                    <Link to="/"><FontAwesomeIcon className="fa-light" style={{ color: 'white' }} icon={faCat} /></Link>
                 </div>
                 <div className="nav-bar-right">
                     {/* on click func */}
