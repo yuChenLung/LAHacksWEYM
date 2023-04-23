@@ -8,7 +8,7 @@ const { PlannedSchedule, validatePlannedScheduleReq} = require("../models/planne
 // const {getLatLng} = require("../../weym/src/Geocoding/getlatlng.js");
 //GET REQUESTS
 
-function getDist(la1, lo1, la2, lo2){
+function getDist(la1, lon1, la2, lon2){
     return Math.acos(Math.sin(la1)*Math.sin(la2)+Math.cos(la1)*Math.cos(la2)*Math.cos(lon2-lon1))*6731;
 }
 
@@ -16,7 +16,7 @@ function getDist(la1, lo1, la2, lo2){
 router.get("/matches/:schedId", async (req, res) => {
     //put username inside body here
     //should return the information of a similar schedule and user
-    const matches = [];
+    let matches = [];
     var baseSched = await PlannedSchedule.findOne({_id: req.params.schedId});
     /* for await (const pSched of PlanneSchedule.find() ){
     	if (pSched.ObjectId == myPSched.ObjectId)
@@ -32,14 +32,21 @@ router.get("/matches/:schedId", async (req, res) => {
         //make sure time interval overlaps
         if ( !((baseSched.startTime <= pSched.endTime) && (baseSched.endTime >= pSched.startTime)) )
             continue;
-        var sDistance = getDist(pSched.sLatitude, pSched.sLongitude, baseSched.sLatitude, baseSched.sLongitude);
-        var dDistance = getDist(pSched.dLatitude, pSched.dLongitude, baseSched.dLatitude, baseSched.dLongitude);
-        if (sDistance>20 || dDistance>20)
+        if (!pSched.sLat)
+            continue;
+        var sDistance = getDist(pSched.sLat, pSched.sLong, baseSched.sLat, baseSched.sLong);
+        var dDistance = getDist(pSched.dLat, pSched.dLong, baseSched.dLat, baseSched.dLong);
+        if (sDistance>300 || dDistance>300)
             continue;
         var compatability = sDistance*dDistance;
+        matches.push([pSched,compatability]);
         console.log(pSched)
     }
-    return res.status(400).send("Please try again.");
+    matches.sort((a,b)=>b[1]-a[1]);
+    if (matches.length < 5)
+        res.json(matches);
+    res.json({"matches":matches.slice(0,5)});
+    return res.status(200).send("Please try again.");
 });
 
 // to get user profile
@@ -49,6 +56,22 @@ router.get("/:userId", async (req, res) => {
     if (!user) return res.status(400).send("User doesn't exist.");
     return res.status(200).send(user);
 });
+
+router.get("/:userId/:day", async (req, res) => {
+    console.log(req.params);
+    var user = await User.findById(req.params.userId);
+    if (!user) return res.status(400).send("User doesn't exist.");
+    let results = []
+    for await (const pSched of PlannedSchedule.find({user: req.params.userId, day: req.params.day}) ) {
+        results.push(pSched);
+    }
+    for await (const pSched of Schedule.find({user: req.params.userId, day: req.params.day})) {
+        results.push(pSched);
+    }
+    res.json(results);
+    return res.status(200).send(user);
+});
+
 
 router.post("/login", async (req, res) => {
 	console.log("logging in!")
