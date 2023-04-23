@@ -13,7 +13,7 @@ function CreateTripForm(props) {
         for (const pair of tempData.entries()) {
             formData.append(pair[0], pair[1]);
         }
-        
+
         const formJson = Object.fromEntries(formData.entries());
         console.log(formJson);
 
@@ -29,8 +29,8 @@ function CreateTripForm(props) {
 
     async function fetchData(jsonData) {
         try {
-            const response = await fetch('http://localhost:8001/pschedule', { 
-                method: 'POST', 
+            const response = await fetch('http://localhost:8001/pschedule', {
+                method: 'POST',
                 body: JSON.stringify(jsonData),
                 headers: {
                     'Content-Type': 'application/json'
@@ -43,22 +43,51 @@ function CreateTripForm(props) {
     }
 
     return (
-        <>
-            <h1>Enter Origin and Destination</h1>
+        <div className="tripBox-createTrip">
+            <h1 style={{ textAlign: "center" }}>Create a Trip</h1>
             <form onSubmit={handleSubmit}>
-                <label>
-                    Start Location:
-                    <input type="text" name="startLocation"/>
-                </label>
-                <br />
-                <label>
-                    Destination:
-                    <input type="text" name="destination"/>
-                </label>
-                <br />
-                <button type="submit">Submit</button>
+                <div className="form-fields-location">
+                    <label>Start Time:</label>
+                    <input
+                        className="horiz-field"
+                        type="time"
+                        name="startTime"
+                    />
+                    <label>End Time:</label>
+                    <input
+                        className="horiz-field"
+                        type="time"
+                        name="endTime"
+                    />
+                    <label>Day of the Week:</label>
+                    {/* add default value */}
+                    <select name="day" style={{ marginBottom: '5px' }}>
+                        <option value="1">Sunday</option>
+                        <option value="2">Monday</option>
+                        <option value="3">Tuesday</option>
+                        <option value="4">Wednesday</option>
+                        <option value="5">Thursday</option>
+                        <option value="6">Friday</option>
+                        <option value="7">Saturday</option>
+                    </select>
+                    <label>Start Location:</label>
+                    <input
+                        className="horiz-field"
+                        type="text"
+                        name="startLocation"
+                        placeholder="Enter a starting location"
+                    />
+                    <label>Destination:</label>
+                    <input
+                        className="horiz-field"
+                        type="text"
+                        name="destination"
+                        placeholder="Enter a destination"
+                    />
+                </div>
+                <button className="createTripButton" type="submit">Submit</button>
             </form>
-        </>
+        </div>
     );
 }
 

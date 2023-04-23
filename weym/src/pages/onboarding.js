@@ -1,6 +1,10 @@
 import '../components/components.css';
+import { useDatabase } from '../context/state';
+
 
 function Onboarding() {
+    const context = useDatabase();
+
     function validatePassword(e) {
         e.preventDefault();
         console.log(e.target.value);
@@ -15,8 +19,8 @@ function Onboarding() {
 
     async function fetchData(jsonData) {
         try {
-            const response = await fetch('http://localhost:8001/register', { 
-                method: 'POST', 
+            const response = await fetch('http://localhost:8001/register', {
+                method: 'POST',
                 body: JSON.stringify(jsonData),
                 headers: {
                     'Content-Type': 'application/json'
@@ -176,7 +180,7 @@ function Onboarding() {
                     />
                 </div>
             </div>
-            <button className="submitButton" type="submit"><span>Submit and Continue</span></button>
+            <button className="submitButton" type="submit"><span>Register</span></button>
         </form>
     );
 }

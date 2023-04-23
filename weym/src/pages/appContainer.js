@@ -1,13 +1,15 @@
 import React from 'react'
 import Scheduler from '../components/scheduler'
 import UpcomingTrip from '../components/upcomingTrip'
+import CreateTrip from '../components/createTrip'
 
 function AppContainer() {
     return (
         <div>
             <div style={{ display: 'flex' }}>
                 <div style={{ width: window.innerWidth * .28 }}>
-                    <UpcomingTrip></UpcomingTrip>
+                    <CreateTrip></CreateTrip>
+                    {/* <UpcomingTrip></UpcomingTrip> */}
                 </div>
                 <Scheduler />
             </div>
