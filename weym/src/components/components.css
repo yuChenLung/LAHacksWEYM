@@ -66,7 +66,7 @@
   .dropdown-content a:hover {background-color: #ddd;}
   
   /* Show the dropdown menu (use JS to add this class to the .dropdown-content container when the user clicks on the dropdown button) */
-  .show {display:block;}
+  .showDropdown {display:block;}
 
   /* Onboarding CSS */
 
@@ -316,3 +316,33 @@
   height: 550px;
   text-align: center;
 }
+
+/* Sign In Form */
+.show {
+  display: block;
+  position:absolute;
+  transition: 800ms;
+  z-index: 5;
+}
+
+.signInBox {
+  width: 30%;
+  left: 35%;
+  top: 20%;
+  padding: 20px;
+  margin: auto;
+  border-radius: 25px;
+  background-color: rgb(55, 87, 59);
+  color: white;
+}
+
+
+.signIn {
+  display: flex;
+  flex-direction: column;
+}
+
+.hide {
+  display: none;
+}
+

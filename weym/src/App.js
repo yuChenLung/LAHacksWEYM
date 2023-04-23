@@ -4,15 +4,18 @@ import NavBar from './components/NavBar.js';
 import Profile from './pages/Profile.js';
 import Onboarding from './pages/onboarding.js';
 import LandingPage from './pages/landing.js';
+import SignIn from './components/signIn.js';
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import './App.css';
 
 function App() {
+
   return (
     <div>
       <DataWrapper>
         <BrowserRouter>
           <NavBar signedIn={false} />
+          <SignIn />
           <Routes>
             <Route path='/' element={<LandingPage />} />
             <Route path='/onboarding' element={<Onboarding />} />

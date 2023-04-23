@@ -1,4 +1,4 @@
-import React, {createContext, useContext, useState, useEffect} from 'react'
+import React, { createContext, useContext, useState, useEffect } from 'react'
 
 const dataState = createContext()
 
@@ -6,7 +6,7 @@ export const useDatabase = () => {
   return useContext(dataState)
 }
 
-const DataWrapper = ({children}) => {
+const DataWrapper = ({ children }) => {
   const [scheduleObject, setScheduleObject] = useState(undefined)
   const [schedulerActive, setSchedulerActive] = useState(false)
 
@@ -14,6 +14,8 @@ const DataWrapper = ({children}) => {
 
   const [latitude, setLatitude] = useState(34.063914)
   const [longitude, setLongitude] = useState(-118.448699)
+
+  const [showSignIn, setShowSignIn] = useState(false)
 
   useEffect(() => {
     // Whenever a value is updated (i.e. the scheduler data, or the geolocation, it will call this use effect)
@@ -61,27 +63,36 @@ const DataWrapper = ({children}) => {
     setRefresh(refresh + 1)
   }
 
+  const updateShowSignIn = () => {
+    setShowSignIn(!showSignIn)
+  }
+
   return (
     <div>
-        <dataState.Provider
-          value={{
-            // All of the values listed here are available to be referenced among the children components.
-            scheduler: {
-              active: schedulerActive,
-              object: scheduleObject,
-              setObject: updateScheduler
-            },
-            refresh: refresh,
-            doRefresh: updateRefresh,
-            user: {
-              latitude: latitude,
-              longitude: longitude,
-              setLocation: updateLocation,
-            }
-          }}
-        >
-          {children}
-        </dataState.Provider>
+      <dataState.Provider
+        value={{
+          // All of the values listed here are available to be referenced among the children components.
+          scheduler: {
+            active: schedulerActive,
+            object: scheduleObject,
+            setObject: updateScheduler
+          },
+          refresh: refresh,
+          doRefresh: updateRefresh,
+          user: {
+            latitude: latitude,
+            longitude: longitude,
+            setLocation: updateLocation,
+          },
+          signIn: {
+            showSignIn: showSignIn,
+            setSignIn: updateShowSignIn,
+          }
+
+        }}
+      >
+        {children}
+      </dataState.Provider>
     </div>
   )
 }
