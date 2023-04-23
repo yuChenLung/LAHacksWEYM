@@ -127,7 +127,7 @@ function NavBar() {
             // JSX code to render component goes here
             <div className="nav-bar">
                 <div className="nav-bar-left">
-                    <Link to="/onboarding"><FontAwesomeIcon className="fa-light" style={{ color: 'white' }} icon={faCat} /></Link>
+                    <Link to="/"><FontAwesomeIcon className="fa-light" style={{ color: 'white' }} icon={faCat} /></Link>
                 </div>
                 <div className="nav-bar-right">
                     {/* on click func */}
