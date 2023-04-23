@@ -391,9 +391,19 @@
 
 .reject {
   background-color: rgba(247, 76, 76, 0.753);
-/* Landing Page */
 }
 
+/* Matches Component */
+.matches {
+  margin-top: 175px;
+  max-height: 250px;
+  position: relative;
+  overflow-x: hidden;
+  overflow: scroll;
+  /* background-color: rgba(247, 76, 76, 0.753); */
+}
+
+/* Landing Page */
 .landingHeader { 
   grid-area: header;
  }

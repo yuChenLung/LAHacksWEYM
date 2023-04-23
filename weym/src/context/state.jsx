@@ -195,6 +195,10 @@ const DataWrapper = ({ children }) => {
             sendersProposalInfo: sendersProposalInfo,
             updateSendersInfo: updateSendersInfo,
           },
+          matches: {
+            plannedEvents: plannedEvents,
+            updatePlannedEvents: updatePlannedEvents,
+          },
           setTripClicked: updateTripClicked,
           createTrip: createTrip,
           setCreateTrip: updateCreateTrip,

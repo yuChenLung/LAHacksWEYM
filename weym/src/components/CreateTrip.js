@@ -1,10 +1,10 @@
 import './components.css';
 import { useDatabase } from '../context/state';
-import getLatLng from '../Geocoding/getlatlng';
+import getLatLng from '../geocoding/getlatlng.js';
 
 const days = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"]
 
-function CreateTripForm(props) {
+function CreateTripForm() {
     const context = useDatabase();
 
     async function handleSubmit(e) {
