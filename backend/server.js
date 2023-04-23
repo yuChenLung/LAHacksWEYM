@@ -38,5 +38,7 @@ mongoose.connect(url, {
     console.log(err);
 });
 
-const userRouter = require('./routes/users');
+const userRouter = require('./routes/users.js');
+const pSchedRouter = require('./routes/plannedSchedule.js');
 app.use("/",userRouter);
+app.use("/",pSchedRouter);

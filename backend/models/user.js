@@ -26,7 +26,7 @@ const UserSchema = new mongoose.Schema({
     	type: String,
     	required: true,
     	minLength: 5,
-    	maxLength: 15
+    	maxLength: 20
     },
     schedules : {
         type: Array,
@@ -43,7 +43,7 @@ const UserSchema = new mongoose.Schema({
 });
 
 UserSchema.methods.validatePassword = function(password) {
-    return password === this.password
+    return password === this.password;
 }
 
 function validateUserLogin(user) {
@@ -60,7 +60,8 @@ function validateUserRegister(user) {
         lastName: Joi.string().min(1).max(50).required(),
         email: Joi.string().max(50).required(),
         password: Joi.string().min(3).max(255).required(),
-        adddress: Joi.string().min(3).max(255).required()
+        adddress: Joi.string().min(3).max(255).required(),
+        organization: Joi.string().min(2).max(255).required()
     });
     return schema.validate(user);
 }

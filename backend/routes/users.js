@@ -21,6 +21,29 @@ router.get("/matches", async (req, res) => {
     } */
 });
 
+// to get user profile
+router.get("/:userId", async (req, res) => {
+    console.log(req.params);
+    var user = await User.findById(req.params.userId);
+    if (!user) return res.status(400).send("User doesn't exist.");
+    return res.status(200).send(user);
+});
+
+router.post("/login", async (req, res) => {
+	console.log("logging in!")
+    // validate the request body first
+    const { error } = validateLogin(req.body);
+    if (error) return res.status(400).send(error.details[0].message);
+    //find an existing user
+    var user = await User.findOne({ email: req.body.email });
+    if (!user) return res.status(400).send("Please try again.");
+    if (user.validatePassword(req.body.password)) {
+        res.json({userId: user._id})
+        return res.status(200).send();
+    }
+    else return res.status(400).send("Please try again.");
+});
+
 
 //POST REQUESTS
 router.post("/register", async (req, res) => {
@@ -35,32 +58,10 @@ router.post("/register", async (req, res) => {
         email: req.body.email,
         password: req.body.password,
         address: req.body.address,
+        organization: req.body.organization,
     });
     user.save();
     return res.status(200).send("User registered successfully.");
-});
-
-router.post("/makepschedule", async (req, res) => {
-	console.log("making a pSchedule!")
-    // validate the request body first
-    const { error } = validatePlannedScheduleReq(req.body);
-    if (error) return res.status(400).send(error.details[0].message);
-    var day = req.body.day;
-    while (day>0){
-    	plannedSchedule = new PlannedSchedule({
-	    	user: req.body.userID,
-	    	startTime: req.body.startTime,
-	    	endTime: req.body.endTime,
-	    	day: day%10,
-	    	startLocation: req.body.startLocation,
-	    	destination: req.body.destination,
-	    });
-	    plannedSchedule.save();
-	    day/=10;
-	    day=~~day; //rounds to integer
-    }
-   
-    return res.status(200).send("Made the planned schedule!");
 });
 
 module.exports = router
