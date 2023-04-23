@@ -4,7 +4,7 @@ const router = express.Router();
 const ObjectId = mongoose.Types.ObjectId;
 const { User, validateLogin, validateRegister} = require("../models/user.js");
 const { Schedule, validateSchedule} = require("../models/schedule.js");
-const { PlannedSchedule, validatePlannedScheduleReq, validatePlannedScheduleUpdate} = require("../models/plannedSchedule.js");
+const { PlannedSchedule, validatePlannedScheduleReq, validatePlannedScheduleUpdate, validateProposal} = require("../models/plannedSchedule.js");
 
 router.get("/pschedule/:scheduleId", async (req, res) => {
     console.log(req.params);
@@ -12,6 +12,53 @@ router.get("/pschedule/:scheduleId", async (req, res) => {
     if (!plannedSchedule) return res.status(400).send("PSchedule doesn't exist.");
     return res.status(200).send(plannedSchedule);
 });
+
+router.post("/propose", async (req, res) => {
+	const { error } = validateProposal(req.body);
+    if (error) return res.status(400).send(error.details[0].message);
+
+    var receiver = await User.findById(req.body.receiverId);
+    if (!receiver) return res.status(400).send("User doesn't exist.");
+
+	var proposal = await PlannedSchedule.findById(req.body.proposalId);
+    if (!proposal) return res.status(400).send("PSchedule doesn't exist.");
+
+    User.findOneAndUpdate({_id: req.body.receiverId}, {$push: {proposedSchedules: proposal}},
+		function (error, success) {
+		    if (error) {
+		        console.log(error);
+		       	res.status(400).send();
+		    } else {
+		        console.log(success);
+		    }
+	});
+    return res.status(200).send("Made the proposal.");
+});
+
+router.post("/reject", async (req, res) => {
+	const { error } = validateProposal(req.body);
+	//will take in a receiverId to delete from, and proposal
+    if (error) return res.status(400).send(error.details[0].message);
+
+    var receiver = await User.findById(req.body.receiverId);
+    if (!receiver) return res.status(400).send("User doesn't exist.");
+
+	var proposal = await PlannedSchedule.findById(req.body.proposalId);
+    if (!proposal) return res.status(400).send("PSchedule doesn't exist.");
+
+    console.log(receiver);
+    User.findOneAndUpdate({_id: req.body.receiverId}, {$pull: {proposedSchedules: req.body.proposalId}},
+		function (error, success) {
+		    if (error) {
+		        console.log(error);
+		       	res.status(400).send();
+		    } else {
+		        console.log(success);
+		    }
+	});
+    return res.status(200).send("Rejected proposal.");
+});
+
 
 router.post("/pschedule", async (req, res) => {
 	console.log("making a pSchedule!")
@@ -44,7 +91,7 @@ router.post("/pschedule", async (req, res) => {
 	    day/=10;
 	    day=~~day; //rounds to integer
     }
-    return res.status(201).send("Made the planned schedule!");
+    return res.status(200).send("Made the planned schedule!");
 });
 
 
