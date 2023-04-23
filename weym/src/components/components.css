@@ -298,12 +298,9 @@
 .tripCard {
   border-radius: 25px;
   background-color: rgba(255, 255, 255, 0.781);
-  padding: 0 10px 15px 10px;
+  padding: 0 10px 0 10px;
   margin-bottom: 10px;
-}
-
-.tripCardTitle {
-  display: flex;
+  align-content: center;
 }
 
 .tripCardTime {
@@ -321,7 +318,8 @@
 .tripCardLocation {
   display: flex;
   padding-left: 10px;
-  font-size: 12px;
+  font-size: 16px;
+  gap: 10px;
 }
 
 .tripBox-createTrip {

@@ -2,14 +2,14 @@ const mongoose = require("mongoose");
 const express = require("express");
 const router = express.Router();
 const ObjectId = mongoose.Types.ObjectId;
-const { User, validateLogin, validateRegister} = require("../models/user.js");
-const { Schedule, validateSchedule} = require("../models/schedule.js");
-const { PlannedSchedule, validatePlannedScheduleReq} = require("../models/plannedSchedule.js");
+const { User, validateLogin, validateRegister } = require("../models/user.js");
+const { Schedule, validateSchedule } = require("../models/schedule.js");
+const { PlannedSchedule, validatePlannedScheduleReq } = require("../models/plannedSchedule.js");
 // const {getLatLng} = require("../../weym/src/Geocoding/getlatlng.js");
 //GET REQUESTS
 
-function getDist(la1, lon1, la2, lon2){
-    return Math.acos(Math.sin(la1)*Math.sin(la2)+Math.cos(la1)*Math.cos(la2)*Math.cos(lon2-lon1))*6731;
+function getDist(la1, lon1, la2, lon2) {
+    return Math.acos(Math.sin(la1) * Math.sin(la2) + Math.cos(la1) * Math.cos(la2) * Math.cos(lon2 - lon1)) * 6731;
 }
 
 // to get the people near you
@@ -17,7 +17,7 @@ router.get("/matches/:schedId", async (req, res) => {
     //put username inside body here
     //should return the information of a similar schedule and user
     let matches = [];
-    var baseSched = await PlannedSchedule.findOne({_id: req.params.schedId});
+    var baseSched = await PlannedSchedule.findOne({ _id: req.params.schedId });
     /* for await (const pSched of PlanneSchedule.find() ){
     	if (pSched.ObjectId == myPSched.ObjectId)
     		continue;
@@ -26,23 +26,23 @@ router.get("/matches/:schedId", async (req, res) => {
 		var compatability = sDistance*dDistance*(myPSched.leaveTime-pSched.leaveTime);
     } */
 
-    for await (const pSched of PlannedSchedule.find({day: baseSched.day})) {
+    for await (const pSched of PlannedSchedule.find({ day: baseSched.day })) {
         if (pSched.user == req.params.user) //check if self
             continue;
         //make sure time interval overlaps
-        if ( !((baseSched.startTime <= pSched.endTime) && (baseSched.endTime >= pSched.startTime)) )
+        if (!((baseSched.startTime <= pSched.endTime) && (baseSched.endTime >= pSched.startTime)))
             continue;
         if (!pSched.sLat)
             continue;
         var sDistance = getDist(pSched.sLat, pSched.sLong, baseSched.sLat, baseSched.sLong);
         var dDistance = getDist(pSched.dLat, pSched.dLong, baseSched.dLat, baseSched.dLong);
-        if (sDistance>300 || dDistance>300)
+        if (sDistance > 300 || dDistance > 300)
             continue;
-        var compatability = sDistance*dDistance;
-        matches.push([pSched,compatability]);
+        var compatability = sDistance * dDistance;
+        matches.push([pSched, compatability]);
         console.log(pSched)
     }
-    matches.sort((a,b)=>b[1]-a[1]);
+    matches.sort((a, b) => b[1] - a[1]);
     if (matches.length < 5)
         res.json({"matches":matches});
     else
@@ -63,10 +63,10 @@ router.get("/user/:userId/:day", async (req, res) => {
     var user = await User.findById(req.params.userId);
     if (!user) return res.status(400).send("User doesn't exist.");
     let results = []
-    for await (const pSched of PlannedSchedule.find({user: req.params.userId, day: req.params.day}) ) {
+    for await (const pSched of PlannedSchedule.find({ user: req.params.userId, day: req.params.day })) {
         results.push(pSched);
     }
-    for await (const pSched of Schedule.find({user: req.params.userId, day: req.params.day})) {
+    for await (const pSched of Schedule.find({ user: req.params.userId, day: req.params.day })) {
         results.push(pSched);
     }
     res.json(results);
@@ -75,7 +75,7 @@ router.get("/user/:userId/:day", async (req, res) => {
 
 
 router.post("/login", async (req, res) => {
-	console.log("logging in!")
+    console.log("logging in!")
     // validate the request body first
     const { error } = validateLogin(req.body);
     if (error) return res.status(400).send(error.details[0].message);
@@ -83,7 +83,7 @@ router.post("/login", async (req, res) => {
     var user = await User.findOne({ email: req.body.email });
     if (!user) return res.status(400).send("Please try again.");
     if (user.validatePassword(req.body.password)) {
-        res.json({userId: user._id})
+        res.json({ userId: user._id })
         return res.status(200).send();
     }
     else return res.status(400).send("Please try again.");
@@ -92,7 +92,7 @@ router.post("/login", async (req, res) => {
 
 //POST REQUESTS
 router.post("/register", async (req, res) => {
-	const { error } = validateRegister(req.body);
+    const { error } = validateRegister(req.body);
     if (error) return res.status(400).send(error.details[0].message);
     else user = await User.findOne({ email: req.body.email });
     if (user) return res.status(400).send("email already taken.");
