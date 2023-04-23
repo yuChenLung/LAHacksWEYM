@@ -62,7 +62,7 @@ function UpcomingTrip() {
                 {/* if it is a real schedule ride, show riders instead of carpooler!! */}
                 <div>
                     <button className="findRidersButton" onClick={() => context.setTripClicked(false)}><span>Back</span></button>
-                    <button className="findRidersButton"><span>Find a Carpooler</span></button>
+                    <button className="findRidersButton"><span>Find a Carpool</span></button>
                 </div>
             </div>
         );

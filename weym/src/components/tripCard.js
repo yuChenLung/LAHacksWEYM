@@ -4,6 +4,8 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faLocationDot, faArrowRight } from '@fortawesome/free-solid-svg-icons';
 
 function TripCard() {
+
+
     return (
         <div className="tripCard">
             <div className="tripCardTitle">

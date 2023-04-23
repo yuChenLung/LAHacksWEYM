@@ -6,7 +6,7 @@ function AppContainer() {
     return (
         <div>
             <div style={{ display: 'flex', width: "100%" }}>
-                <div style={{ width: window.innerWidth * .28 }}>
+                <div style={{ width: window.innerWidth * .25 }}>
                     <UpcomingTrip></UpcomingTrip>
                 </div>
                 <Scheduler />
