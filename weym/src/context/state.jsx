@@ -10,6 +10,8 @@ const DataWrapper = ({ children }) => {
   const [endTime, setEndTime] = useState(undefined)
   const [startTime, setStartTime] = useState(undefined)
   const [day, setDay] = useState(undefined)
+  const [startLocation, setStartLocation] = useState(undefined)
+  const [destination, setEndLocation] = useState(undefined)
 
   const [refresh, setRefresh] = useState(0)
 
@@ -27,6 +29,8 @@ const DataWrapper = ({ children }) => {
 
   const [proposals, setProposals] = useState([])
   const [sendersProposalInfo, setSendersInfo] = useState([])
+
+  const [plannedEvents, setPlannedEvents] = useState([])
 
   useEffect(() => {
     // Whenever a value is updated (i.e. the scheduler data, or the geolocation, it will call this use effect)
@@ -65,6 +69,17 @@ const DataWrapper = ({ children }) => {
     setEndTime(e)
     setStartTime(s)
     setDay(d)
+    setRefresh(refresh + 1)
+  }
+
+  const updateDestinations = (start, end) => {
+    if (start == undefined || end == undefined){
+        setStartLocation(undefined)
+        setEndLocation(undefined)
+    }
+
+    setStartLocation(start)
+    setEndLocation(end)
     setRefresh(refresh + 1)
   }
 
@@ -110,6 +125,10 @@ const DataWrapper = ({ children }) => {
     setSendersInfo(sendersInfo)
   }
 
+  const updatePlannedEvents = (data) => {
+    setPlannedEvents(data)
+  }
+
   return (
     <div>
       <dataState.Provider
@@ -119,7 +138,14 @@ const DataWrapper = ({ children }) => {
             startTime: startTime,
             endTime: endTime,
             day: day,
+            startLocation: startLocation,
+            destination: destination,
+            setDestinations: updateDestinations, 
             setSchedule: updateScheduler
+          },
+          matches:{
+            plannedEvents: plannedEvents,
+            updatePlannedEvents: updatePlannedEvents,
           },
           refresh: refresh,
           doRefresh: updateRefresh,
