@@ -50,7 +50,7 @@ function ProposalCard(props) {
         const response = window.confirm('Are you sure you want to accept this request?');
         if (response) {
             const proposalData = {
-                receiverId: '644484d880bc9840d9f2b800', //context.user.uid
+                receiverId: localStorage.getItem("userId"),
                 proposalId: proposal["_id"],
             }
             console.log(proposalData);
@@ -63,7 +63,7 @@ function ProposalCard(props) {
         const response = window.confirm('Are you sure you want to reject this request?');
         if (response) {
             const proposalData = {
-                receiverId: '644484d880bc9840d9f2b800', //context.user.uid
+                receiverId: localStorage.getItem("userId"),
                 proposalId: proposal["_id"],
             }
             console.log(proposalData);

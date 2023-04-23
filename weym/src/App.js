@@ -16,14 +16,14 @@ function App() {
     <div>
       <DataWrapper>
         <BrowserRouter>
-          <NavBar signedIn={true} />
+          <NavBar />
           <SignIn />
           <Routes>
             <Route path='/' element={<Scheduler />} />
             <Route path='/onboarding' element={<Onboarding />} />
             <Route path='/profile' element={<Profile />} />
             <Route path='/app' element={<AppContainer />} />
-            <Route path='create-trip' element={<CreateTripForm startTime={30} endTime={60} day={1}/>} />
+            <Route path='create-trip' element={<CreateTripForm startTime={30} endTime={60} day={1} />} />
           </Routes>
         </BrowserRouter>
       </DataWrapper>

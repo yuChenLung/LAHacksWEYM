@@ -22,7 +22,7 @@ function UpcomingTrip() {
                 return "Saturday";
         }
     }
-    var onTrip = false;
+    var onTrip = true;
     if (onTrip) {
         return (
             <div className="tripBox">

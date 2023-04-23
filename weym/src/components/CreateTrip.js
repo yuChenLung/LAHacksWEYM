@@ -8,8 +8,8 @@ function CreateTripForm(props) {
     async function handleSubmit(e) {
         e.preventDefault();
         const formData = new FormData();
-        formData.append('user', context.user.uid);
-        formData.append('startTime', props.startTime);
+        formData.append('user', localStorage.getItem("userId"));
+               formData.append('startTime', props.startTime);
         formData.append('endTime', props.endTime);
         formData.append('day', props.day);
         const temp = e.target;

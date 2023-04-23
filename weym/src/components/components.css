@@ -76,7 +76,10 @@
   .dropdown-content a:hover {background-color: #ddd;}
   
   /* Show the dropdown menu (use JS to add this class to the .dropdown-content container when the user clicks on the dropdown button) */
-  .showDropdown {display:block;}
+  .showDropdown {
+    display:block;
+    z-index: 3;
+  }
 
   /* Onboarding CSS */
 

@@ -23,6 +23,7 @@ function NavBar() {
         context.signIn.setSignedIn();
         context.user.setUID('');
         navigate('/onboarding');
+        localStorage.clear();
     }
 
     async function fetchProposedSchedule(proposalId) {
@@ -43,7 +44,7 @@ function NavBar() {
 
     async function fetchUserData(uid) {
         try {
-            const response = await fetch('http://localhost:8001/' + uid, { //context.user.uid, { 
+            const response = await fetch('http://localhost:8001/' + uid, {
                 method: 'GET',
                 headers: {
                     'Content-Type': 'application/json'
@@ -63,7 +64,7 @@ function NavBar() {
 
         context.navBar.setProposalDropdown();
         if (!context.navBar.showProposalDropdown) {
-            userData = await fetchUserData('644484d880bc9840d9f2b800');
+            userData = await fetchUserData(localStorage.getItem("userId"));
         }
 
         if (userData && userData.proposedSchedules.length !== 0) {
@@ -85,7 +86,7 @@ function NavBar() {
         // console.log(context.proposal.sendersProposalInfo);
     }
 
-    if (context.signIn.signedIn) {
+    if (localStorage.getItem("signedIn") !== null && localStorage.getItem("signedIn")) {
         return (
             // JSX code to render component goes here
             <div className="nav-bar">
@@ -106,12 +107,9 @@ function NavBar() {
                     <div className="dropdown">
                         <button className="dropbtn" onClick={() => context.navBar.setProfileDropdown()}><FontAwesomeIcon icon={faUser} size="lg" /></button>
                         <div id="profileDropdown" className={`dropdown-content ${context.navBar.showProfileDropdown ? "showDropdown" : ""}`}>
-                            <Link to="/profile">View Profile</Link>
-                            <Link to="/onboarding">
-                                <button onClick={handleLogOutClick}>Log out</button>
-                            </Link>
                             <Link to="/create-trip">Create a Trip</Link>
-                            {/* add onclick for login function */}
+                            <Link to="/profile">View Profile</Link>
+                            <Link to="/onboarding" onClick={handleLogOutClick}>Log out</Link>
                         </div>
                     </div>
                 </div>
