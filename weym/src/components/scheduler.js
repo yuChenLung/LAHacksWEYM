@@ -298,6 +298,7 @@ const Scheduler = (props) => {
                   'Content-Type': 'application/json'
               },
           });
+          console.log(response)
         } catch (error) {
             console.error('Error fetching data:', error);
             return null;
@@ -335,7 +336,7 @@ const Scheduler = (props) => {
       newScheduledTrips.push({i: global_counter, x: newX, y: newY, h: 20, w: 1})
       global_counter+=1
 
-      let uid = '6443cd3b66d2a4511b0d3837'
+      let uid = '64450e42dae8d7fcbb04043f'
       const formattedJson = {
         user:  uid,
         startTime: newY * 5,
@@ -366,7 +367,7 @@ const Scheduler = (props) => {
         // This would be replaced with a functional call to retrieve the events from the user collection-base
         //
         async function fetchData() {
-          let uid = '6443cd3b66d2a4511b0d3837'
+          let uid = '64450e42dae8d7fcbb04043f'
           try {
               const response = await fetch('http://localhost:8001/' + uid, { 
                   method: 'GET', 
@@ -378,6 +379,7 @@ const Scheduler = (props) => {
               let planned = []
               console.log(json)
               for (let i = 0; i < json.plannedSchedules.length; i+=1){
+                console.log(json.plannedSchedules[i])
                 let content = await fetchSchedule(json.plannedSchedules[i])
                 planned.push(dataToCoord(content))
               }
