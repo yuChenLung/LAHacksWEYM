@@ -4,6 +4,7 @@ import TripCard from './tripCard.js';
 import { useDatabase } from '../context/state';
 
 function UpcomingTrip() {
+    const context = useDatabase()
     function getWeekdayLabel(dayOfWeek) {
         switch (dayOfWeek) {
             case 1:
@@ -24,23 +25,31 @@ function UpcomingTrip() {
     }
     var onTrip = true;
     if (onTrip) {
+        const startHour = Math.floor(context.scheduler.startTime/60)
+        const startMinNum = Math.floor(context.scheduler.startTime/60)
+        const startMinString = startMinNum === 0 ? String(startMinNum) + "0" : String(startMinNum)
+        const startTimeLabel = startHour >= 12 ? startHour + ':' + startMinString + " PM" : startHour + ':' + context.scheduler.startTime % 60 + " AM";
+        const endHour = Math.floor(context.scheduler.endTime/60)
+        const endMinNum = Math.floor(context.scheduler.startTime/60)
+        const endMinString = endMinNum === 0 ? String(startMinNum) + "0" : String(startMinNum)
+        const endTimeLabel = endHour >= 12 ? endHour + ':' + endMinString + " PM" : endHour + ':' + context.scheduler.endTime % 60 + " AM";
         return (
             <div className="tripBox">
                 <h1>{getWeekdayLabel(1)}</h1>
                 <div className="timeline">
                     <div className="container">
                         <div className="left">
-                            <p className="content">start time</p>
+                            <p className="content">{startTimeLabel}</p>
                         </div>
                         <span className="dot"></span>
-                        <p className="location">start location</p>
+                        <p className="location">{context.scheduler.startLocation}</p>
                     </div>
                     <div style={{ marginTop: '50px' }} class="container">
                         <div className="left">
-                            <p class="content">end time</p>
+                            <p class="content">{endTimeLabel}</p>
                         </div>
                         <span class="dot"></span>
-                        <p className="location">end location</p>
+                        <p className="location">{context.scheduler.destination}</p>
                     </div>
                     {/* <p>start time</p>
                     <p>end time</p> */}

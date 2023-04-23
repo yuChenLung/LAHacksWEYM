@@ -50,10 +50,11 @@ function ProposalCard(props) {
         const response = window.confirm('Are you sure you want to accept this request?');
         if (response) {
             const proposalData = {
-                receiverId: '644484d880bc9840d9f2b800', //context.user.uid
+                receiverId: localStorage.getItem("userId"),
                 proposalId: proposal["_id"],
             }
             console.log(proposalData);
+            context.navBar.setProfileDropdown();
             await sendProposalResponse('schedule', proposalData);
         }
     }
@@ -63,16 +64,14 @@ function ProposalCard(props) {
         const response = window.confirm('Are you sure you want to reject this request?');
         if (response) {
             const proposalData = {
-                receiverId: '644484d880bc9840d9f2b800', //context.user.uid
+                receiverId: localStorage.getItem("userId"),
                 proposalId: proposal["_id"],
             }
             console.log(proposalData);
-            // await sendProposalResponse('reject', proposalData);
+            context.navBar.setProfileDropdown();
+            await sendProposalResponse('reject', proposalData);
         }
     }
-
-
-    // post request - on click for confirm or reject (green check or red x)
 
     return (
         <div className="proposalCard">

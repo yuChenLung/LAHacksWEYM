@@ -10,6 +10,8 @@ const DataWrapper = ({ children }) => {
   const [endTime, setEndTime] = useState(undefined)
   const [startTime, setStartTime] = useState(undefined)
   const [day, setDay] = useState(undefined)
+  const [startLocation, setStartLocation] = useState(undefined)
+  const [destination, setEndLocation] = useState(undefined)
 
   const [refresh, setRefresh] = useState(0)
 
@@ -70,6 +72,17 @@ const DataWrapper = ({ children }) => {
     setRefresh(refresh + 1)
   }
 
+  const updateDestinations = (start, end) => {
+    if (start == undefined || end == undefined){
+        setStartLocation(undefined)
+        setEndLocation(undefined)
+    }
+
+    setStartLocation(start)
+    setEndLocation(end)
+    setRefresh(refresh + 1)
+  }
+
   const updateUID = data => {
     setUserID(data)
     return
@@ -125,7 +138,14 @@ const DataWrapper = ({ children }) => {
             startTime: startTime,
             endTime: endTime,
             day: day,
+            startLocation: startLocation,
+            destination: destination,
+            setDestinations: updateDestinations, 
             setSchedule: updateScheduler
+          },
+          matches:{
+            plannedEvents: plannedEvents,
+            updatePlannedEvents: updatePlannedEvents,
           },
           refresh: refresh,
           doRefresh: updateRefresh,

@@ -10,7 +10,7 @@ function CreateTripForm() {
     async function handleSubmit(e) {
         e.preventDefault();
         const formData = new FormData();
-        formData.append('user', context.user.uid);
+        formData.append('user', localStorage.getItem("userId"));
         formData.append('startTime', context.scheduler.startTime);
         formData.append('endTime', context.scheduler.endTime);
         formData.append('day', context.scheduler.day);
@@ -20,11 +20,11 @@ function CreateTripForm() {
             formData.append(pair[0], pair[1]);
         }
 
-        var {lat, lng} = await getLatLng(formData.get('startLocation'));
+        var { lat, lng } = await getLatLng(formData.get('startLocation'));
         console.log(lat, lng);
         formData.append('sLat', lat);
         formData.append('sLong', lng);
-        var {lat, lng} = await getLatLng(formData.get('destination'));
+        var { lat, lng } = await getLatLng(formData.get('destination'));
         console.log(lat, lng);
         formData.append('dLat', lat);
         formData.append('dLong', lng);

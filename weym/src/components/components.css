@@ -13,6 +13,8 @@
 .nav-bar-left {
     float: left;
     margin-left: 10px;
+    font-size: 30px;
+    padding: 20px 15px;
 }
 
 .nav-bar-right {
@@ -76,7 +78,10 @@
   .dropdown-content a:hover {background-color: #ddd;}
   
   /* Show the dropdown menu (use JS to add this class to the .dropdown-content container when the user clicks on the dropdown button) */
-  .showDropdown {display:block;}
+  .showDropdown {
+    display:block;
+    z-index: 3;
+  }
 
   /* Onboarding CSS */
 
@@ -388,8 +393,45 @@
   background-color: rgba(247, 76, 76, 0.753);
 }
 
+/* Matches Component */
 .matches {
   margin-top: 175px;
   position: relative;
   background-color: rgba(247, 76, 76, 0.753);
+}
+
+/* Landing Page */
+.landingHeader { 
+  grid-area: header;
+ }
+
+.landingFooter { 
+  grid-area: footer;
+}
+.landingMain { grid-area: main; }
+.landingRight { grid-area: right; }
+
+.grid-container {
+  display: grid;
+  border-radius: 25px;
+  grid-template-areas:
+    'header header header header header'
+    'main main main right right '
+    'main main main footer footer';
+  background-color: rgba(54, 163, 78, 0.705);
+  width: 95%;
+  margin-top: 15px !important;
+  margin: auto;
+  font-family: 'Courier';
+}
+
+.grid-container > div {
+  background-color: rgba(255, 255, 255, 0.8);
+  text-align: left;
+  padding: 0 20px;
+  font-size: 30px;
+}
+
+.landingText {
+  font-size: 18px;
 }

@@ -177,12 +177,32 @@ const Scheduler = (props) => {
     const context = useDatabase()
 
     const reference = React.useRef()
+
+    async function fetchSchedule(id) {
+      try {
+          const response = await fetch('http://localhost:8001/pschedule/' + id, { 
+              method: 'GET', 
+              headers: {
+                  'Content-Type': 'application/json'
+              },
+          });
+          let json = await response.json()
+          return json
+      } catch (error) {
+          console.error('Error fetching data:', error);
+          return null;
+      }
+    };
     
-    function handleCardClick(event) {
+    async function handleCardClick(event, cardID) {
       event.stopPropagation()
       if (isClickingGrid === false){
         setClicking(true)
         console.log("Card Click")
+
+        let schedule = await fetchSchedule(cardID)
+        context.scheduler.setDestinations(schedule.startLocation, schedule.destination)
+        context.scheduler.setSchedule(schedule.startTime, schedule.endTime, schedule.day)
       }
       // database.scheduler.setObject(event)
     }
@@ -289,24 +309,7 @@ const Scheduler = (props) => {
     }
 
     async function createScheduleRequest(event){
-      async function postData(jsonData){
-        try {
-          const response = await fetch('http://localhost:8001/pschedule', { 
-              method: 'POST', 
-              body: JSON.stringify(jsonData),
-              headers: {
-                  'Content-Type': 'application/json'
-              },
-          });
-          console.log(response)
-        } catch (error) {
-            console.error('Error fetching data:', error);
-            return null;
-        }
-      }
       setClickingGrid(false)
-      // console.log(event.target.parentNode.parentNode.scrollTop)
-
       let gridXStart = reference.current.offsetLeft + window.innerWidth * .04
       let gridYStart = reference.current.offsetTop
     
@@ -356,6 +359,7 @@ const Scheduler = (props) => {
               let json = await response.json()
               let planned = []
               console.log(json)
+              context.updatePlannedEvents(json.plannedSchedules)
               for (let i = 0; i < json.plannedSchedules.length; i+=1){
                 console.log(json.plannedSchedules[i])
                 let content = await fetchSchedule(json.plannedSchedules[i])
@@ -369,22 +373,6 @@ const Scheduler = (props) => {
               return null;
             }
         };
-      
-        async function fetchSchedule(id) {
-          try {
-              const response = await fetch('http://localhost:8001/pschedule/' + id, { 
-                  method: 'GET', 
-                  headers: {
-                      'Content-Type': 'application/json'
-                  },
-              });
-              let json = await response.json()
-              return json
-          } catch (error) {
-              console.error('Error fetching data:', error);
-              return null;
-          }
-        };
         fetchData()
     }, [context.refresh]);
 
@@ -394,7 +382,7 @@ const Scheduler = (props) => {
       view.push(
         <div
             key={scheduledTrips[index].i}
-            onClick={(event) => {notDragging ? handleCardClick(event) : console.log("Currently dragging.")}}
+            onClick={(event) => {notDragging ? handleCardClick(event, scheduledTrips[index].i) : console.log("Currently dragging.")}}
             style={{
                 // description
                 display: "flex",

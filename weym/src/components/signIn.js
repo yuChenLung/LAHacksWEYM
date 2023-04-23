@@ -19,12 +19,15 @@ function SignIn() {
         try {
             const response = await fetchData(formJson);
             console.log("UID: ", response);
-            
+
             // Handle the response data here
             if (response && validCredentials) {
                 context.user.setUID(response.userId);
                 context.signIn.setSignedIn(true);
                 context.signIn.setShowSignIn(false);
+                localStorage.setItem("userId", response.userId);
+                localStorage.setItem("signedIn", true);
+                navigate('/app');
             }
         } catch (error) {
             console.error('Error fetching data:', error);
@@ -34,8 +37,8 @@ function SignIn() {
 
     async function fetchData(data) {
         try {
-            const response = await fetch('http://localhost:8001/login', { 
-                method: 'POST', 
+            const response = await fetch('http://localhost:8001/login', {
+                method: 'POST',
                 body: JSON.stringify(data),
                 headers: {
                     'Content-Type': 'application/json'
