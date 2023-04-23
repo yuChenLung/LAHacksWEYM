@@ -90,7 +90,7 @@ function NavBar() {
             // JSX code to render component goes here
             <div className="nav-bar">
                 <div className="nav-bar-left">
-                    <Link to="/"><img src={logo} width="100px" /></Link>
+                    <Link to="/app"><img src={logo} width="100px" /></Link>
                 </div>
                 <div className="nav-bar-right">
                     {/* add eco friendly stats */}

@@ -19,7 +19,7 @@ function App() {
           <NavBar signedIn={true} />
           <SignIn />
           <Routes>
-            <Route path='/' element={<Scheduler />} />
+            <Route path='/' element={<AppContainer />} />
             <Route path='/onboarding' element={<Onboarding />} />
             <Route path='/profile' element={<Profile />} />
             <Route path='/app' element={<AppContainer />} />

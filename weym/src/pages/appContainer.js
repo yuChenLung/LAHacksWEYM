@@ -8,8 +8,8 @@ function AppContainer() {
         <div>
             <div style={{ display: 'flex' }}>
                 <div style={{ width: window.innerWidth * .28 }}>
-                    <CreateTripForm></CreateTripForm>
-                    {/* <UpcomingTrip></UpcomingTrip> */}
+                    {/* <CreateTripForm></CreateTripForm> */}
+                    <UpcomingTrip></UpcomingTrip>
                 </div>
                 <Scheduler />
             </div>

@@ -387,3 +387,9 @@
 .reject {
   background-color: rgba(247, 76, 76, 0.753);
 }
+
+.matches {
+  margin-top: 175px;
+  position: relative;
+  background-color: rgba(247, 76, 76, 0.753);
+}

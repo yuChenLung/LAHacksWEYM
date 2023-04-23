@@ -22,7 +22,7 @@ function UpcomingTrip() {
                 return "Saturday";
         }
     }
-    var onTrip = false;
+    var onTrip = true;
     if (onTrip) {
         return (
             <div className="tripBox">
@@ -45,10 +45,15 @@ function UpcomingTrip() {
                     {/* <p>start time</p>
                     <p>end time</p> */}
                 </div>
-                <div className="map">
+                <div className="matches">
+                    <div>
+                        {context.matches.plannedEvents["length"] > 0 ? Array.from({ length: context.matches.plannedEvents["length"] }, (v, index) => {
+                            return <TripCard key={index} i={index} />;
+                        }) : <p style={{ textAlign: "center" }}>No planned events!</p>}
+                    </div>
                 </div>
                 {/* if it is a real schedule ride, show riders instead of carpooler!! */}
-                <button className="findRidersButton"><span>Find a Carpooler</span></button>
+                {/* <button className="findRidersButton"><span>Find a Carpooler</span></button> */}
             </div>
         );
     }
