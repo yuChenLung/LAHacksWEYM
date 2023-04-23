@@ -8,11 +8,16 @@ const { PlannedSchedule, validatePlannedScheduleReq} = require("../models/planne
 // const {getLatLng} = require("../../weym/src/Geocoding/getlatlng.js");
 //GET REQUESTS
 
+function getDist(la1, lo1, la2, lo2){
+    return Math.acos(Math.sin(la1)*Math.sin(la2)+Math.cos(la1)*Math.cos(la2)*Math.cos(lon2-lon1))*6731;
+}
+
 // to get the people near you
-router.get("/matches", async (req, res) => {
+router.get("/matches/:schedId", async (req, res) => {
     //put username inside body here
     //should return the information of a similar schedule and user
-    var myPSched = await PlannedSchedule.findOne({ObjectId: req.params.schedule});
+    const matches = [];
+    var baseSched = await PlannedSchedule.findOne({_id: req.params.schedId});
     /* for await (const pSched of PlanneSchedule.find() ){
     	if (pSched.ObjectId == myPSched.ObjectId)
     		continue;
@@ -20,6 +25,21 @@ router.get("/matches", async (req, res) => {
 		var dDistance = smthnsmthn(pSched.dLatitude, pSched.dLongitude, myPSched.dLatitude, myPSched.dLongitude);
 		var compatability = sDistance*dDistance*(myPSched.leaveTime-pSched.leaveTime);
     } */
+
+    for await (const pSched of PlannedSchedule.find({day: baseSched.day})) {
+        if (pSched.user == req.params.user) //check if self
+            continue;
+        //make sure time interval overlaps
+        if ( !((baseSched.startTime <= pSched.endTime) && (baseSched.endTime >= pSched.startTime)) )
+            continue;
+        var sDistance = getDist(pSched.sLatitude, pSched.sLongitude, baseSched.sLatitude, baseSched.sLongitude);
+        var dDistance = getDist(pSched.dLatitude, pSched.dLongitude, baseSched.dLatitude, baseSched.dLongitude);
+        if (sDistance>20 || dDistance>20)
+            continue;
+        var compatability = sDistance*dDistance;
+        console.log(pSched)
+    }
+    return res.status(400).send("Please try again.");
 });
 
 // to get user profile

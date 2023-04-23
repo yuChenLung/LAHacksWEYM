@@ -4,7 +4,11 @@ import { useDatabase } from "../context/state"
 import "./scheduler.css";
 import "../../node_modules/react-resizable/css/styles.css";
 
+
 // every 5 minutes is 1 height => 12 height is one hour
+
+let global_counter = 0
+
 const timeHours = [
   "12 AM",
   "1 AM",
@@ -101,17 +105,12 @@ const gridVertical = timeDay.map((day) => {
 })
 
     // Mainly for the initialization state when a user has already added or changed events in the user collection (saved)
-    function dateToCoord (data){
-      let start = 0
-      data.userStartTime.length === 8 ? 
-          start = (Number(data.userStartTime[0] + data.userStartTime[1]) * 12) + (Number(data.userStartTime[3] + data.userStartTime[4])/5) : 
-          start = (Number(data.userStartTime[0]) * 12) + (Number(data.userStartTime[2] + data.userStartTime[3])/5)
-      let end = 0
-      data.userEndTime.length === 8 ? 
-          end = (Number(data.userEndTime[0] + data.userEndTime[1]) * 12) + (Number(data.userEndTime[3] + data.userEndTime[4])/5) : 
-          end = (Number(data.userEndTime[0]) * 12) + (Number(data.userEndTime[2] + data.userEndTime[3])/5)
-      let date = new Date(data.userDate.replace(/-/g,'\/'))
-      return {i: data.id, x: date.getDay(), y: start, w: 1, h: end - start + 1}
+  function dataToCoord (data){
+    let x = data.day - 1
+    let y = data.startTime / 5
+    let h = (data.endTime - data.startTime) / 6
+    let i = data._id
+    return {i: i, x: x, y: y, h: h, w: 1}
   }
 
   // Function primarily used in the situation where the event is resized or redragged to update the database in the user's collection.
@@ -174,7 +173,10 @@ const Scheduler = (props) => {
     const [isClickingCard, setClicking] = React.useState(false)
     const [isClickingGrid, setClickingGrid] = React.useState(false)
     const [trips, setTrips] = React.useState([]); 
+    const [numTrips, setNumTrips] = React.useState(0)
     const database = useDatabase()
+
+    const reference = React.useRef()
     
     function handleCardClick(event) {
       event.stopPropagation()
@@ -186,10 +188,11 @@ const Scheduler = (props) => {
     }
 
     function handleGridClick(event) {
+      console.log("Grid Click (-1)")
       if (isClickingCard === false){
         setClickingGrid(true)
         console.log("Grid Click")
-        createScheduleRequest()
+        createScheduleRequest(event)
       }
     }
 
@@ -285,87 +288,158 @@ const Scheduler = (props) => {
         // })
     }
 
-    function createScheduleRequest(){
-      console.log("Creating schedule request")
-    }
+    async function createScheduleRequest(event){
+      async function postData(jsonData){
+        try {
+          const response = await fetch('http://localhost:8001/pschedule', { 
+              method: 'POST', 
+              body: JSON.stringify(jsonData),
+              headers: {
+                  'Content-Type': 'application/json'
+              },
+          });
+          console.log(response)
+        } catch (error) {
+            console.error('Error fetching data:', error);
+            return null;
+        }
+      }
+      setClickingGrid(false)
+      // console.log(event.target.parentNode.parentNode.scrollTop)
 
+      let gridXStart = reference.current.offsetLeft + window.innerWidth * .04
+      let gridYStart = reference.current.offsetTop
+    
+      let offset = event.pageY - gridYStart - 13
+      let scrollAmount = event.target.parentNode.parentNode.scrollTop
+
+      let gridXEnd = gridXStart + window.innerWidth * .68
+      let division = (gridXEnd - gridXStart)/7
+      let i = 0
+      for (;i < 7; i+=1){
+        let nextGridX = gridXStart + division
+        console.log(gridXStart, nextGridX)
+        if (event.pageX >= gridXStart && event.pageX < nextGridX){
+          break
+        }
+        gridXStart = nextGridX
+      }
+      
+      let newX = i
+      // Now i refers to the day of the actual event.
+      console.log("Scroll Amount: ", scrollAmount)
+      console.log("Offset: ", offset)
+      let newY = Math.round((scrollAmount + offset)/61) * 6
+      console.log("X, Y: ", newX, newY)
+
+      let newScheduledTrips = scheduledTrips
+      newScheduledTrips.push({i: global_counter, x: newX, y: newY, h: 20, w: 1})
+      global_counter+=1
+
+      let uid = '64450e42dae8d7fcbb04043f'
+      const formattedJson = {
+        user:  uid,
+        startTime: newY * 5,
+        endTime: 60 + newY * 5,
+        day: newX + 1,
+        startLocation: "home",
+        destination: "school"
+      }
+      console.log(formattedJson);
+      //format json object
+
+      // Send post request to database
+      try {
+          const response = await postData(formattedJson);
+          console.log(response);
+          // Handle the response data here
+      } catch (error) {
+          console.error('Error fetching data:', error);
+          // Handle the error here
+      }
+      setScheduledTrips(newScheduledTrips)
+      setNumTrips(numTrips + 1)
+
+      database.doRefresh()
+    }
+  
     React.useEffect(() => {
         // This would be replaced with a functional call to retrieve the events from the user collection-base
-        // 
-        setScheduledTrips([{i: 'a', x: 0, y:0, h: 20, w: 1}])
-      }, [database.refresh]);
-    
-    // let view = scheduledTrips.map((content) => {
-    //   // console.log(firebaseEvents);
-    //   console.log(content)
-    //   //let event = trips.find((element) => element.id === content.i);
-    //   return (
-    //       // TODO: need to call EventCard
-    //       <div
-    //         key={content.i}
-    //         onClick={() => {notDragging ? handleClick(event) : console.log("Currently dragging.")}}
-    //         style={{
-    //             // description
-    //             display: "flex",
-    //             flexDirection: "column",
-    //             alignItems: "flex-start",
-    //             padding: "8px 12px 4px 8px",
-    //             gap: "2px",
-    //             overflowY: "hidden",
+        //
+        async function fetchData() {
+          let uid = '64450e42dae8d7fcbb04043f'
+          try {
+              const response = await fetch('http://localhost:8001/' + uid, { 
+                  method: 'GET', 
+                  headers: {
+                      'Content-Type': 'application/json'
+                  },
+              });
+              let json = await response.json()
+              let planned = []
+              console.log(json)
+              for (let i = 0; i < json.plannedSchedules.length; i+=1){
+                console.log(json.plannedSchedules[i])
+                let content = await fetchSchedule(json.plannedSchedules[i])
+                planned.push(dataToCoord(content))
+              }
 
-    //             // box
-    //             boxSizing: "border-box",
-    //             position: "absolute",
-    //             left: "0%",
-    //             right: "0%",
-    //             top: "0%",
-    //             bottom: "0%",
-    //             borderRadius: "5px",
-    //           }}
-    //       >
-    //       {/* <div
-    //           style={{
-    //           // time
-    //           width: "68px",
-    //           height: "10px",
-    //           fontFamily: "Urbane Rounded",
-    //           fontStyle: "normal",
-    //           fontWeight: "500",
-    //           fontSize: "10px",
-    //           lineHeight: "10px",
+              setScheduledTrips(planned)
+              setNumTrips(json.plannedSchedules.length)
+          } catch (error) {
+              console.error('Error fetching data:', error);
+              return null;
+            }
+        };
+      
+        async function fetchSchedule(id) {
+          try {
+              const response = await fetch('http://localhost:8001/pschedule/' + id, { 
+                  method: 'GET', 
+                  headers: {
+                      'Content-Type': 'application/json'
+                  },
+              });
+              let json = await response.json()
+              return json
+          } catch (error) {
+              console.error('Error fetching data:', error);
+              return null;
+          }
+        };
+        fetchData()
+    }, [database.refresh]);
 
-    //           display: "flex",
-    //           alignItems: "center",
+    console.log(numTrips)
+    let view = []
+    for (let index = 0; index < numTrips; index++){
+      view.push(
+        <div
+            key={scheduledTrips[index].i}
+            onClick={(event) => {notDragging ? handleCardClick(event) : console.log("Currently dragging.")}}
+            style={{
+                // description
+                display: "flex",
+                flexDirection: "column",
+                alignItems: "flex-start",
+                padding: "8px 12px 4px 8px",
+                gap: "2px",
+                overflowY: "hidden",
 
-    //           flex: "none",
-    //           order: "0",
-    //           flexGrow: "0",
-    //           }}
-    //       >
-    //           {timeConverter(event?.userStartTime)}
-    //       </div>
-    //       <div
-    //           style={{
-    //           width: "100px",
-    //           height: "48px",
-    //           fontFamily: "Urbane Rounded", // del
-    //           fontStyle: "normal", // del
-    //           fontWeight: "600",
-    //           fontSize: "16px",
-    //           lineHeight: "16px",
-    //           flex: "none", // del
-    //           order: "1",
-    //           flexGrow: "0", // del
-    //           }}
-    //       >
-    //           {event?.name}
-    //       </div> */}
-    //     </div>
-    //   );
-    // });
+                // box
+                boxSizing: "border-box",
+                position: "absolute",
+                borderRadius: "5px",
+                background: "red",
+              }}
+          >
+          </div>
+      )
+    }
 
-    // console.log(window.innerWidth)
-    // console.log("Scheduled Trips", scheduledTrips)
+    console.log(scheduledTrips)
+    console.log(numTrips)
+    console.log(view)
 
     return (
         <div style={{
@@ -396,7 +470,9 @@ const Scheduler = (props) => {
                 overflowY: "scroll",
                 height: "85vh",
                 overflowX: "hidden",
-            }} className="gridContent">
+            }} 
+                ref={reference}
+                className="gridContent">
                 {/* <div style= {{
                     marginTop: "-20px",
                     height: "2985px",
@@ -408,34 +484,16 @@ const Scheduler = (props) => {
                 <div style={{position: "absolute", paddingLeft: window.innerWidth * .04}}>
                   <GridLayout allowOverlap={true} 
                               resizeHandles={['s']}
-                              onDragStart={() => {setDragging(true)}}
-                              onDragStop={(layout, oldItem, newItem) => onDragStop(layout, oldItem, newItem)} 
+                              onDragStart={() => {setDragging(true); setClickingGrid(false)}}
+                              onDragStop={(layout, oldItem, newItem) => onDragStop(layout, oldItem, newItem)}
+                              onResizeStart={() => {setClickingGrid(false)}}
                               onResizeStop={(element) => onResizeStop(element)}
                               layout={scheduledTrips} 
                               draggable={false} 
                               cols={7} 
                               rowHeight={.335} 
                               width={(window.innerWidth * .68)}>
-                    <div
-                      key={'a'}
-                      onClick={(event) => {notDragging ? handleCardClick(event) : console.log("Currently dragging.")}}
-                      style={{
-                          // description
-                          display: "flex",
-                          flexDirection: "column",
-                          alignItems: "flex-start",
-                          padding: "8px 20px 4px 8px",
-                          gap: "2px",
-                          overflowY: "hidden",
-
-                          backgroundColor: "red",
-
-                          // box
-                          boxSizing: "border-box",
-                          position: "absolute",
-                          borderRadius: "5px",
-                        }}
-                    ></div>
+                    { view }
                   </GridLayout>
                 </div>
                 <div>

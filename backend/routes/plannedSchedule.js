@@ -6,6 +6,7 @@ const { User, validateLogin, validateRegister} = require("../models/user.js");
 const { Schedule, validateSchedule} = require("../models/schedule.js");
 const { PlannedSchedule, validatePlannedScheduleReq, validatePlannedScheduleUpdate, validateProposal} = require("../models/plannedSchedule.js");
 
+
 router.get("/pschedule/:scheduleId", async (req, res) => {
     console.log(req.params);
     var plannedSchedule = await PlannedSchedule.findById(req.params.scheduleId);
@@ -77,6 +78,10 @@ router.post("/pschedule", async (req, res) => {
 	    	day: day%10,
 	    	startLocation: req.body.startLocation,
 	    	destination: req.body.destination,
+	    	sLat: req.body.sLat,
+	        sLong: req.body.sLong,
+	        dLat: req.body.dLat,
+	        dLong: req.body.dLong,
 	    });
 	    plannedSchedule.save();
 	    User.findOneAndUpdate({_id: req.body.user}, {$push: {plannedSchedules: plannedSchedule}},
