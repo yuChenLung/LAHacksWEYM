@@ -26,7 +26,7 @@ app.listen(PORT, function() {
     console.log(`server running on port ${PORT}`);
 });
 
-const url = "mongodb+srv://weym_admin:n72rutFwkAw9u5wW@weymllc.6fhgob6.mongodb.net/?retryWrites=true&w=majority"
+const url = "mongodb+srv://weym_admin:PL6rZ4aUNBDULPF0@weymllc.6fhgob6.mongodb.net/?retryWrites=true&w=majority"
 
 mongoose.connect(url, {
     useNewUrlParser: true,
@@ -40,5 +40,7 @@ mongoose.connect(url, {
 
 const userRouter = require('./routes/users.js');
 const pSchedRouter = require('./routes/plannedSchedule.js');
+const schedRouter = require('./routes/schedule.js');
 app.use("/",userRouter);
 app.use("/",pSchedRouter);
+app.use("/",schedRouter);

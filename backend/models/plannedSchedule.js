@@ -35,7 +35,7 @@ function validatePlannedScheduleReq(schedule) {
 
 function validatePlannedScheduleUpdate(potentialUpdates) {
     const schema = Joi.object({
-        user: Joi.string().max(80).required(),
+        Id: Joi.string().max(80).required(),
         startTime: Joi.number().min(0).max(1440).required(),
         endTime: Joi.number().min(0).max(1440).required(),
         day: Joi.number().min(1).max(7).required(),

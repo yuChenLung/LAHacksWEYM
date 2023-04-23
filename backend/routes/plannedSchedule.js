@@ -6,6 +6,13 @@ const { User, validateLogin, validateRegister} = require("../models/user.js");
 const { Schedule, validateSchedule} = require("../models/schedule.js");
 const { PlannedSchedule, validatePlannedScheduleReq, validatePlannedScheduleUpdate} = require("../models/plannedSchedule.js");
 
+router.get("/pschedule/:scheduleId", async (req, res) => {
+    console.log(req.params);
+    var plannedSchedule = await PlannedSchedule.findById(req.params.scheduleId);
+    if (!plannedSchedule) return res.status(400).send("PSchedule doesn't exist.");
+    return res.status(200).send(plannedSchedule);
+});
+
 router.post("/pschedule", async (req, res) => {
 	console.log("making a pSchedule!")
     // validate the request body first
@@ -102,8 +109,9 @@ router.delete("/pschedule", async (req, res) => {
 		PlannedSchedule.findByIdAndDelete(req.body.Id, function (err) {
 		  if (err) {
 		    console.log(err);
+		    return res.status(400).send("You failed.");
 		  } else {
-		    console.log('PlannedSchedule entry deleted');
+		    console.log('Schedule entry deleted');
 		  }
 		});
 		return res.status(200).send("standin status!");
