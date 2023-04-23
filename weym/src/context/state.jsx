@@ -12,6 +12,7 @@ const DataWrapper = ({ children }) => {
   const [day, setDay] = useState(undefined)
   const [startLocation, setStartLocation] = useState(undefined)
   const [destination, setEndLocation] = useState(undefined)
+  const [tripClicked, setTripClicked] = useState(false)
 
   const [refresh, setRefresh] = useState(0)
 
@@ -31,6 +32,7 @@ const DataWrapper = ({ children }) => {
   const [sendersProposalInfo, setSendersInfo] = useState([])
 
   const [plannedEvents, setPlannedEvents] = useState([])
+  const [createTrip, setCreateTrip] = useState(false)
 
   useEffect(() => {
     // Whenever a value is updated (i.e. the scheduler data, or the geolocation, it will call this use effect)
@@ -57,7 +59,7 @@ const DataWrapper = ({ children }) => {
     }
      */
 
-  const updateScheduler = (s, e, d) => {
+  const updateScheduler = (s, e, d, t) => {
     if (s === undefined || e === undefined || d === undefined) {
       setEndTime(undefined)
       setStartTime(undefined)
@@ -70,12 +72,13 @@ const DataWrapper = ({ children }) => {
     setStartTime(s)
     setDay(d)
     setRefresh(refresh + 1)
+    setTripClicked(t)
   }
 
   const updateDestinations = (start, end) => {
-    if (start == undefined || end == undefined){
-        setStartLocation(undefined)
-        setEndLocation(undefined)
+    if (start == undefined || end == undefined) {
+      setStartLocation(undefined)
+      setEndLocation(undefined)
     }
 
     setStartLocation(start)
@@ -129,6 +132,14 @@ const DataWrapper = ({ children }) => {
     setPlannedEvents(data)
   }
 
+  const updateTripClicked = (t) => {
+    setTripClicked(t)
+  }
+
+  const updateCreateTrip = (trip) => {
+    setCreateTrip(trip)
+  }
+
   return (
     <div>
       <dataState.Provider
@@ -140,10 +151,11 @@ const DataWrapper = ({ children }) => {
             day: day,
             startLocation: startLocation,
             destination: destination,
-            setDestinations: updateDestinations, 
+            tripClicked: tripClicked,
+            setDestinations: updateDestinations,
             setSchedule: updateScheduler
           },
-          matches:{
+          matches: {
             plannedEvents: plannedEvents,
             updatePlannedEvents: updatePlannedEvents,
           },
@@ -178,6 +190,9 @@ const DataWrapper = ({ children }) => {
             sendersProposalInfo: sendersProposalInfo,
             updateSendersInfo: updateSendersInfo,
           },
+          setTripClicked: updateTripClicked,
+          createTrip: createTrip,
+          setCreateTrip: updateCreateTrip,
         }}
       >
         {children}
