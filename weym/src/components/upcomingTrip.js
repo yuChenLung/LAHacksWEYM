@@ -69,7 +69,7 @@ function UpcomingTrip() {
         const date = new Date();
 
         const tripCards = Array.from({ length: numberTrips }, (_, index) => {
-            return <TripCard key={index} />;
+            return <TripCard key={index} i={index} />;
         });
 
         if (numberTrips > 0) {
