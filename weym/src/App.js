@@ -17,7 +17,7 @@ function App() {
           <NavBar signedIn={true} />
           <SignIn />
           <Routes>
-            <Route path='/' element={<Onboarding />} />
+            <Route path='/' element={<LandingPage />} />
             <Route path='/onboarding' element={<Onboarding />} />
             <Route path="/profile" element={<Profile />} />
             <Route path='/app' element={<AppContainer />} />
