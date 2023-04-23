@@ -40,9 +40,9 @@ function NavBar() {
         }
     }
 
-    async function fetchUserData() {
+    async function fetchUserData(uid) {
         try {
-            const response = await fetch('http://localhost:8001/' + '644484d880bc9840d9f2b800', { //context.user.uid, { 
+            const response = await fetch('http://localhost:8001/' + uid, { //context.user.uid, { 
                 method: 'GET',
                 headers: {
                     'Content-Type': 'application/json'
@@ -61,18 +61,21 @@ function NavBar() {
 
         context.navBar.setProposalDropdown();
         if (!context.navBar.showProposalDropdown) {
-            userData = await fetchUserData();
-        console.log(userData);
+            userData = await fetchUserData('644484d880bc9840d9f2b800');
+            console.log(userData);
         }
 
         if (userData && userData.proposedSchedules.length !== 0) {
             var schedules = [];
+            var senderProposalInfo = [];
             var currProp = null;
+            var currPropSender = null;
             for (var i = 0; i < userData.proposedSchedules.length; i++) {
                 console.log(i)
                 currProp = await fetchProposedSchedule(userData.proposedSchedules[i]);
-                console.log(currProp);
+                currPropSender = await fetchUserData(currProp["user"]);
                 schedules.push(currProp);
+                senderProposalInfo.push(currPropSender);
             }
             // Make a useState to save schedules
         }
@@ -89,7 +92,7 @@ function NavBar() {
                 <div className="nav-bar-right">
                     {/* add eco friendly stats */}
                     <div className="dropdown">
-                        <button className="dropProposalbtn" onClick={ handleDropPropClick }><FontAwesomeIcon icon={faCarSide} size="lg" /></button>
+                        <button className="dropProposalbtn" onClick={handleDropPropClick}><FontAwesomeIcon icon={faCarSide} size="lg" /></button>
                         <div id="proposalDropdown" style={{ borderRadius: '15px' }} className={`dropdown-content ${context.navBar.showProposalDropdown ? "showDropdown" : ""}`}>
                             {/* {proposals} */}
                             <p style={{ textAlign: "center" }}>No pending requests!</p>

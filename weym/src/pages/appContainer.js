@@ -1,7 +1,7 @@
 import React from 'react'
 import Scheduler from '../components/scheduler'
 import UpcomingTrip from '../components/upcomingTrip'
-import CreateTrip from '../components/CreateTrip'
+import CreateTrip from '../components/createTrip'
 
 function AppContainer() {
     return (
