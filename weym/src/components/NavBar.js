@@ -24,7 +24,7 @@ function NavBar() {
         context.user.setUID('');
         context.navBar.setProfileDropdown();
         localStorage.clear();
-        navigate('/onboarding');
+        navigate('/');
     }
 
     const handleProfileClick = (e) => {
@@ -114,6 +114,7 @@ function NavBar() {
 
         const tripData = await fetchTripData(localStorage.getItem("userId"), date + 1);
         context.setTripData(tripData);
+        console.log(context.tripData);
     }
 
     if (localStorage.getItem("signedIn") !== null && localStorage.getItem("signedIn")) {
@@ -124,7 +125,6 @@ function NavBar() {
                     <Link onClick={handleAppClick} to="/app"><FontAwesomeIcon className="fa-light" style={{ color: 'white' }} icon={faCat} /></Link>
                 </div>
                 <div className="nav-bar-right">
-                    {/* add eco friendly stats */}
                     <div className="dropdown">
                         <button className="dropProposalbtn" onClick={handleDropPropClick}><FontAwesomeIcon icon={faCarSide} size="lg" /></button>
                         <div id="proposalDropdown" style={{ borderRadius: '15px' }} className={`dropdown-content-proposal dropdown-content ${context.navBar.showProposalDropdown ? "showDropdown" : ""}`}>
