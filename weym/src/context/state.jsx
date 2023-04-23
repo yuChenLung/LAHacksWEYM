@@ -17,6 +17,11 @@ const DataWrapper = ({ children }) => {
 
   const [showSignIn, setShowSignIn] = useState(false)
 
+  const [showProfileDropdown, setProfileDropdown] = useState(false)
+  const [showProposalDropdown, setProposalDropdown] = useState(false)
+
+  const [validCredentials, setValidCredentials] = useState(true)
+
   useEffect(() => {
     // Whenever a value is updated (i.e. the scheduler data, or the geolocation, it will call this use effect)
     console.log("Filler code")
@@ -67,6 +72,18 @@ const DataWrapper = ({ children }) => {
     setShowSignIn(!showSignIn)
   }
 
+  const updateProfileDropdown = () => {
+    setProfileDropdown(!showProfileDropdown)
+  }
+
+  const updateProposalDropdown = () => {
+    setProposalDropdown(!showProposalDropdown)
+  }
+
+  const updateValidCredentials = (valid) => {
+    setValidCredentials(valid)
+  }
+
   return (
     <div>
       <dataState.Provider
@@ -87,8 +104,17 @@ const DataWrapper = ({ children }) => {
           signIn: {
             showSignIn: showSignIn,
             setSignIn: updateShowSignIn,
+          },
+          navBar: {
+            showProfileDropdown: showProfileDropdown,
+            showProposalDropdown: showProposalDropdown,
+            setProfileDropdown: updateProfileDropdown,
+            setProposalDropdown: updateProposalDropdown,
+          },
+          credentials: {
+            validCredentials: validCredentials,
+            setValidCredentials: updateValidCredentials,
           }
-
         }}
       >
         {children}

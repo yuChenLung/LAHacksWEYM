@@ -3,17 +3,42 @@ import logo from '../logo.svg';
 import { Link } from 'react-router-dom';
 import './components.css';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faUser } from '@fortawesome/free-solid-svg-icons';
+import { faUser, faCarSide } from '@fortawesome/free-solid-svg-icons';
 import { useDatabase } from "../context/state";
 
 function NavBar(props) {
-    const [show, setShow] = React.useState(false);
+    // async function fetchUserData() {
+    //     let uid = '6443cd3b66d2a4511b0d3837'
+    //     try {
+    //         const response = await fetch('http://localhost:8001/' + uid, {
+    //             method: 'GET',
+    //             headers: {
+    //                 'Content-Type': 'application/json'
+    //             },
+    //         });
+    //         let json = await response.json()
+    //         return json
+    //     } catch (error) {
+    //         console.error('Error fetching data:', error);
+    //         return null;
+    //     }
+    // }
+
+    /* fetch proposals from user data and then uncomment proposals and make the card */
+
+    // fetchUserData().then((data) => {
+    //     console.log(data);
+    // });
 
     const database = useDatabase();
     const handleSignInClick = (e) => {
         e.preventDefault();
         database.signIn.setSignIn();
     }
+
+    // const proposals = Array.from({ length: numProposals }, (_, index) => {
+    //     return <ProposalCard key={index} />;
+    // });
 
     if (props.signedIn) {
         return (
@@ -25,8 +50,16 @@ function NavBar(props) {
                 <div className="nav-bar-right">
                     {/* add eco friendly stats */}
                     <div className="dropdown">
-                        <button className="dropbtn" onClick={() => setShow(!show)}><FontAwesomeIcon icon={faUser} size="lg" /></button>
-                        <div id="profileDropdown" className={`dropdown-content ${show ? "showDropdown" : ""}`}>
+                        <button className="dropProposalbtn" onClick={() => database.navBar.setProfileDropdown()}><FontAwesomeIcon icon={faCarSide} size="lg" /></button>
+                        <div id="profileDropdown" style={{ borderRadius: '15px' }} className={`dropdown-content ${database.navBar.showProfileDropdown ? "showDropdown" : ""}`}>
+                            {/* {proposals} */}
+                            <p style={{ textAlign: "center" }}>No pending requests!</p>
+                        </div>
+                    </div>
+
+                    <div className="dropdown">
+                        <button className="dropbtn" onClick={() => database.navBar.setProposalDropdown()}><FontAwesomeIcon icon={faUser} size="lg" /></button>
+                        <div id="profileDropdown" className={`dropdown-content ${database.navBar.showProposalDropdown ? "showDropdown" : ""}`}>
                             <Link to="/profile">View Profile</Link>
                             <Link to="/">Log out</Link>
                             {/* add onclick for login function */}
@@ -48,7 +81,6 @@ function NavBar(props) {
                     <Link to="/onboarding">
                         <button className="dropbtn" style={{ fontSize: '18px' }} onClick={handleSignInClick}>Sign in <FontAwesomeIcon icon={faUser} size="lg" /></button>
                     </Link>
-                    <Link to="/create-trip-form">Plan a Trip</Link>
                     {/* connect to onboarding page */}
                 </div>
             </div >

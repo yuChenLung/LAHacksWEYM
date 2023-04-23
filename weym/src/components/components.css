@@ -25,14 +25,24 @@
 .dropbtn {
     background-color: rgba(69, 146, 88, 0.767);
     color: white;
-    padding: 10px;
+    padding: 15px;
+    border-radius: 150px;
+    border: none;
+    cursor: pointer;
+  }
+
+  .dropProposalbtn {
+    background-color: rgba(69, 146, 88, 0.767);
+    color: white;
+    padding: 15px;
+    margin-right: 10px;
     border-radius: 150px;
     border: none;
     cursor: pointer;
   }
   
   /* Dropdown button on hover & focus */
-  .dropbtn:hover, .dropbtn:focus {
+  .dropbtn:hover, .dropbtn:focus, .dropProposalbtn:hover, .dropProposalbtn:focus {
     background-color: rgba(50, 134, 82, 0.966);
   }
   
