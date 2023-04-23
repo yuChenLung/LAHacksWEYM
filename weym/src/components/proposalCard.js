@@ -54,6 +54,7 @@ function ProposalCard(props) {
                 proposalId: proposal["_id"],
             }
             console.log(proposalData);
+            context.navBar.setProfileDropdown();
             await sendProposalResponse('schedule', proposalData);
         }
     }
@@ -67,12 +68,10 @@ function ProposalCard(props) {
                 proposalId: proposal["_id"],
             }
             console.log(proposalData);
-            // await sendProposalResponse('reject', proposalData);
+            context.navBar.setProfileDropdown();
+            await sendProposalResponse('reject', proposalData);
         }
     }
-
-
-    // post request - on click for confirm or reject (green check or red x)
 
     return (
         <div className="proposalCard">
