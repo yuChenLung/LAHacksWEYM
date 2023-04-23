@@ -1,6 +1,10 @@
 import '../components/components.css';
+import { useDatabase } from '../context/state';
+
 
 function Onboarding() {
+    const context = useDatabase();
+
     function validatePassword(e) {
         e.preventDefault();
         console.log(e.target.value);

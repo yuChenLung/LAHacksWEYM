@@ -15,6 +15,8 @@ const DataWrapper = ({children}) => {
   const [latitude, setLatitude] = useState(34.063914)
   const [longitude, setLongitude] = useState(-118.448699)
 
+  const [uid, setUserID] = useState('')
+
   useEffect(() => {
     // Whenever a value is updated (i.e. the scheduler data, or the geolocation, it will call this use effect)
     console.log("Filler code")
@@ -52,6 +54,11 @@ const DataWrapper = ({children}) => {
     setSchedulerActive(true)
   }
 
+  const updateUID = data => {
+    setUserID(data)
+    return
+  }
+
   const updateLocation = (lat, long) => {
     setLatitude(lat)
     setLongitude(long)
@@ -74,9 +81,11 @@ const DataWrapper = ({children}) => {
             refresh: refresh,
             doRefresh: updateRefresh,
             user: {
+              uid: uid,
               latitude: latitude,
               longitude: longitude,
               setLocation: updateLocation,
+              setUID: updateUID,
             }
           }}
         >

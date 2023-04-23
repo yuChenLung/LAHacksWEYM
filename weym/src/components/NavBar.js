@@ -4,11 +4,13 @@ import { Link } from 'react-router-dom';
 import './components.css';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faUser } from '@fortawesome/free-solid-svg-icons';
+import { useDatabase } from '../context/state';
 
 function NavBar(props) {
     const [show, setShow] = React.useState(false);
+    const context = useDatabase();
 
-    if (props.signedIn) {
+    if (context.user.uid != '') {
         return (
             // JSX code to render component goes here
             <div className="nav-bar">
@@ -34,7 +36,7 @@ function NavBar(props) {
             // JSX code to render component goes here
             <div className="nav-bar">
                 <div className="nav-bar-left">
-                    <Link to="/"><img src={logo} width="100px" alt="Carpool Logo" /></Link>
+                    <Link to="/onboarding"><img src={logo} width="100px" alt="Carpool Logo" /></Link>
                 </div>
                 <div className="nav-bar-right">
                     {/* on click func */}

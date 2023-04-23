@@ -1,6 +1,7 @@
 import React from 'react';
 import './components.css';
-import TripCard from './tripCard.js'
+import TripCard from './tripCard.js';
+import { useDatabase } from '../context/state';
 
 function UpcomingTrip() {
     function getWeekdayLabel(dayOfWeek) {
