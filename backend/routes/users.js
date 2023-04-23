@@ -57,7 +57,7 @@ router.get("/:userId", async (req, res) => {
     return res.status(200).send(user);
 });
 
-router.get("/:userId/:day", async (req, res) => {
+router.get("/user/:userId/:day", async (req, res) => {
     console.log(req.params);
     var user = await User.findById(req.params.userId);
     if (!user) return res.status(400).send("User doesn't exist.");
